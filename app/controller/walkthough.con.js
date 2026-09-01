@@ -44,6 +44,74 @@ const FindAllVideo = async (req, res) => {
     });
   }
 };
+const UpdateVideo = async (req, res) => {
+  try {
+    const { walkthrough_id } = req.params;
+
+    const video = req.files?.video?.[0]?.filename;
+
+    const videoData = await walkthrough.findByPk(walkthrough_id);
+
+    if (!videoData) {
+      return res.status(404).json({
+        status: false,
+        message: "Walkthrough Video Not Found",
+      });
+    }
+
+    if (video) {
+      videoData.video = video;
+    }
+
+    await videoData.save();
+
+    return res.status(200).json({
+      status: true,
+      message: "Video Updated Successfully",
+      data: videoData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
 
 
-module.exports = {Addvideo,FindAllVideo}
+const DeleteVideo = async (req, res) => {
+  try {
+    const { walkthrough_id } = req.params;
+
+    const videoData = await walkthrough.findByPk(walkthrough_id);
+
+    if (!videoData) {
+      return res.status(404).json({
+        status: false,
+        message: "Walkthrough Video Not Found",
+      });
+    }
+
+    await videoData.destroy();
+
+    return res.status(200).json({
+      status: true,
+      message: "Video Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
+
+
+module.exports = {
+  Addvideo,
+  FindAllVideo,
+  UpdateVideo,
+  DeleteVideo
+};

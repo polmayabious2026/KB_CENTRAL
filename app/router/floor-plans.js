@@ -2,7 +2,12 @@ const express = require("express");
 const floor_router = express.Router();
 const upload = require("../middleware/upload");
 
-const {AddFloorPlans,FindAllFloorData} = require("../controller/floor-plans.con");
+const {
+  AddFloorPlans,
+  FindAllFloorData,
+  UpdateFloorPlans,
+  DeleteFloorPlans
+} = require("../controller/floor-plans.con");
 
 // add /api/admin before routes
 floor_router.post(
@@ -17,7 +22,22 @@ floor_router.post(
  AddFloorPlans,
 );
 floor_router.get("/getall_floorplans", FindAllFloorData);
-// submenu_router.put("/update_submenu/:submenu_id",UpdateSubMenu);
-// submenu_router.delete("/delete_submenu/:submenu_id",DeleteSubMenu);
+
+floor_router.put(
+  "/update_floorplans/:floor_id",
+  upload.fields([
+    { name: "floorimage_one", maxCount: 1 },
+    { name: "floorimage_two", maxCount: 1 },
+    { name: "floorimage_three", maxCount: 1 },
+    { name: "floorimage_four", maxCount: 1 },
+    { name: "floorimage_five", maxCount: 1 },
+  ]),
+  UpdateFloorPlans
+);
+
+floor_router.delete(
+  "/delete_floorplans/:floor_id",
+  DeleteFloorPlans
+);
 
 module.exports = floor_router;

@@ -105,5 +105,39 @@ const UpdateStrategicAdvantages = async (req, res) => {
     });
   }
 };
+const DeleteStrategicAdvantages = async (req, res) => {
+  try {
+    const { strategy_id } = req.params;
 
-module.exports = {AddStrategicAdvantages,GetAllData,UpdateStrategicAdvantages}
+    const deletedRows = await strategic.destroy({
+      where: {
+        id: strategy_id,
+      },
+    });
+
+    if (deletedRows === 0) {
+      return res.status(404).json({
+        status: false,
+        message: "Strategic advantage not found",
+      });
+    }
+
+    return res.status(200).json({
+      status: true,
+      message: "Strategic advantage deleted successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      mesage: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  AddStrategicAdvantages,
+  GetAllData,
+  UpdateStrategicAdvantages,
+  DeleteStrategicAdvantages,
+};

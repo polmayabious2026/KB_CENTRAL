@@ -77,16 +77,112 @@ const FindAllBrandsData = async (req, res) => {
     });
   }
 };
+const UpdateBrands = async (req, res) => {
+  try {
+    const { brand_id } = req.params;
+    const { title } = req.body;
+
+    const brandData = await brands.findByPk(brand_id);
+
+    if (!brandData) {
+      return res.status(404).json({
+        status: false,
+        message: "Brand Not Found",
+      });
+    }
+
+    const brandlogo_one =
+      req.files?.brandlogo_one?.[0]?.filename;
+
+    const brandlogo_two =
+      req.files?.brandlogo_two?.[0]?.filename;
+
+    const brandlogo_three =
+      req.files?.brandlogo_three?.[0]?.filename;
+
+    const brandlogo_four =
+      req.files?.brandlogo_four?.[0]?.filename;
+
+    const brandlogo_five =
+      req.files?.brandlogo_five?.[0]?.filename;
+
+    if (title) {
+      brandData.title = title;
+    }
+
+    if (brandlogo_one) {
+      brandData.brandlogo_one = brandlogo_one;
+    }
+
+    if (brandlogo_two) {
+      brandData.brandlogo_two = brandlogo_two;
+    }
+
+    if (brandlogo_three) {
+      brandData.brandlogo_three = brandlogo_three;
+    }
+
+    if (brandlogo_four) {
+      brandData.brandlogo_four = brandlogo_four;
+    }
+
+    if (brandlogo_five) {
+      brandData.brandlogo_five = brandlogo_five;
+    }
+
+    await brandData.save();
+
+    return res.status(200).json({
+      status: true,
+      message: "Brand Updated Successfully",
+      data: brandData,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(400).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
+
+const DeleteBrands = async (req, res) => {
+  try {
+    const { brand_id } = req.params;
+
+    const brandData = await brands.findByPk(brand_id);
+
+    if (!brandData) {
+      return res.status(404).json({
+        status: false,
+        message: "Brand Not Found",
+      });
+    }
+
+    await brandData.destroy();
+
+    return res.status(200).json({
+      status: true,
+      message: "Brand Deleted Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(400).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  AddBrands,
+  FindAllBrandsData,
+  UpdateBrands,
+  DeleteBrands,
+};
 
 
-
-
-
-
-
-
-
-
-
-
-module.exports = {AddBrands,FindAllBrandsData}
