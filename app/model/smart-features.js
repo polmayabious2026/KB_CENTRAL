@@ -1,0 +1,55 @@
+const sequelize = require("../config/dB.js")
+const{DataTypes}=require("sequelize")
+
+const smartfeaturesSchema = sequelize.define("smartfeatures",{
+    id:{
+        type:DataTypes.INTEGER,
+        autoIncrement:true,
+        primaryKey:true,
+    },
+    bulletpoint_one:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    description_one:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    bulletpoint_two:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    description_two:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    bulletpoint_three:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    description_three:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    bulletpoint_four:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    description_four:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    created_at:{
+        type:DataTypes.DATE
+    },
+    updated_at:{
+        type:DataTypes.DATE
+    },
+},{
+    tableName:"smartfeatures",
+    timestamps:true,
+    createdAt:"created_at",
+    updatedAt:"updated_at"
+})
+
+module.exports=smartfeaturesSchema
