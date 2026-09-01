@@ -46,5 +46,77 @@ const AllOverviews = async (req, res) => {
     });
   }
 };
+const UpdateOverview = async (req, res) => {
+  try {
+    const { overview_id } = req.params;
+    const { bold_title, description } = req.body;
 
-module.exports = {AddOverview,AllOverviews}
+    const overviewData = await overviews.findByPk(overview_id);
+
+    if (!overviewData) {
+      return res.status(404).json({
+        status: false,
+        message: "Overview Not Found",
+      });
+    }
+
+    if (bold_title) {
+      overviewData.bold_title = bold_title.trim().toUpperCase();
+    }
+
+    if (description) {
+      overviewData.description = description;
+    }
+
+    await overviewData.save();
+
+    return res.status(200).json({
+      status: true,
+      message: "Overview Updated Successfully",
+      data: overviewData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+
+const DeleteOverview = async (req, res) => {
+  try {
+    const { overview_id } = req.params;
+
+    const overviewData = await overviews.findByPk(overview_id);
+
+    if (!overviewData) {
+      return res.status(404).json({
+        status: false,
+        message: "Overview Not Found",
+      });
+    }
+
+    await overviewData.destroy();
+
+    return res.status(200).json({
+      status: true,
+      message: "Overview Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+
+module.exports = {
+  AddOverview,
+  AllOverviews,
+  UpdateOverview,
+  DeleteOverview,
+};
