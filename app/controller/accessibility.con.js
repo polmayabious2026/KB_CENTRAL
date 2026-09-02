@@ -95,5 +95,149 @@ const Allaccessibility = async (req, res) => {
     });
   }
 };
+const Updateaccessibility = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-module.exports = { Addaccessibility, Allaccessibility };
+    const {
+      bulletpoint_one,
+      description_one,
+      bulletpoint_two,
+      description_two,
+      bulletpoint_three,
+      description_three,
+      bulletpoint_four,
+      description_four,
+      bulletpoint_five,
+      description_five,
+    } = req.body;
+
+    const findData = await accessibility.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "accessibility Not Found",
+      });
+    }
+
+    if (
+      !bulletpoint_one &&
+      !description_one &&
+      !bulletpoint_two &&
+      !description_two &&
+      !bulletpoint_three &&
+      !description_three &&
+      !bulletpoint_four &&
+      !description_four &&
+      !bulletpoint_five &&
+      !description_five &&
+      !req.file
+    ) {
+      return res.status(400).json({
+        status: false,
+        message: "Provide Data To Update",
+      });
+    }
+
+    const updateData = {};
+
+    if (bulletpoint_one) {
+      updateData.bulletpoint_one = bulletpoint_one.trim().toUpperCase();
+    }
+
+    if (description_one) {
+      updateData.description_one = description_one;
+    }
+
+    if (bulletpoint_two) {
+      updateData.bulletpoint_two = bulletpoint_two.trim().toUpperCase();
+    }
+
+    if (description_two) {
+      updateData.description_two = description_two;
+    }
+
+    if (bulletpoint_three) {
+      updateData.bulletpoint_three = bulletpoint_three.trim().toUpperCase();
+    }
+
+    if (description_three) {
+      updateData.description_three = description_three;
+    }
+
+    if (bulletpoint_four) {
+      updateData.bulletpoint_four = bulletpoint_four.trim().toUpperCase();
+    }
+
+    if (description_four) {
+      updateData.description_four = description_four;
+    }
+
+    if (bulletpoint_five) {
+      updateData.bulletpoint_five = bulletpoint_five.trim().toUpperCase();
+    }
+
+    if (description_five) {
+      updateData.description_five = description_five;
+    }
+
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    await accessibility.update(updateData, {
+      where: {
+        id: id,
+      },
+    });
+
+    const updatedData = await accessibility.findByPk(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "accessibility Updated Successfully",
+      data: updatedData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const Deleteaccessibility = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findData = await accessibility.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "accessibility Not Found",
+      });
+    }
+
+    await accessibility.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "accessibility Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { Addaccessibility, Allaccessibility, Updateaccessibility, Deleteaccessibility };

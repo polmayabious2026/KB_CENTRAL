@@ -55,5 +55,98 @@ const Allpreviousprojects = async (req, res) => {
     });
   }
 };
+const Updatepreviousprojects = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description } = req.body;
 
-module.exports = {Addpreviousprojects,Allpreviousprojects}
+    const findData = await previousprojects.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "previousprojects Not Found",
+      });
+    }
+
+    if (!title && !description && !req.file) {
+      return res.status(400).json({
+        status: false,
+        message: "Provide Title, Description Or Image",
+      });
+    }
+
+    const updateData = {};
+
+    if (title) {
+      updateData.title = title.trim().toUpperCase();
+    }
+
+    if (description) {
+      updateData.description = description;
+    }
+
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    await previousprojects.update(updateData, {
+      where: {
+        id: id,
+      },
+    });
+
+    const updatedData = await previousprojects.findByPk(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "previousprojects Updated Successfully",
+      data: updatedData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const Deletepreviousprojects = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findData = await previousprojects.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "previousprojects Not Found",
+      });
+    }
+
+    await previousprojects.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "previousprojects Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  Addpreviousprojects,
+  Allpreviousprojects,
+  Updatepreviousprojects,
+  Deletepreviousprojects,
+};

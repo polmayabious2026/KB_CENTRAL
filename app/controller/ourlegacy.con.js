@@ -45,5 +45,84 @@ const Allourlegacy = async (req, res) => {
     });
   }
 };
+const Updateourlegacy = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description } = req.body;
 
-module.exports = {Addourlegacy,Allourlegacy}
+    const findData = await ourlegacy.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "ourlegacy Not Found",
+      });
+    }
+
+    if (!description) {
+      return res.status(400).json({
+        status: false,
+        message: "Provide Description",
+      });
+    }
+
+    await ourlegacy.update(
+      {
+        description,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+
+    const updatedData = await ourlegacy.findByPk(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "ourlegacy Updated Successfully",
+      data: updatedData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const Deleteourlegacy = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findData = await ourlegacy.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "ourlegacy Not Found",
+      });
+    }
+
+    await ourlegacy.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "ourlegacy Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {Addourlegacy,Allourlegacy,Updateourlegacy,Deleteourlegacy}

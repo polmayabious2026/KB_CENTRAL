@@ -36,6 +36,8 @@ router.use("/admin",require("./ourlegacy.router"))
 router.use("/admin",require("./vision&philosophy"))
 router.use("/admin",require("./previous.projects.router"))
 router.use("/admin",require("./contact.router"))
+router.use("/admin",require("./aboutavoragroup.router"))
+router.use("/admin",require("./wellness.spaces.router"))
 
 
 

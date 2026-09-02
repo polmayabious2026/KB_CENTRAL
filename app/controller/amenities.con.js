@@ -52,5 +52,94 @@ const Allamenities = async (req, res) => {
     });
   }
 };
+const Updateamenities = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { bold_title } = req.body;
 
-module.exports = {Addamenities,Allamenities}
+    const findData = await amenities.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "amenities Not Found",
+      });
+    }
+
+    if (!bold_title && !req.file) {
+      return res.status(400).json({
+        status: false,
+        message: "Provide Title Or Image",
+      });
+    }
+
+    const updateData = {};
+
+    if (bold_title) {
+      updateData.bold_title = bold_title.trim().toUpperCase();
+    }
+
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    await amenities.update(updateData, {
+      where: {
+        id: id,
+      },
+    });
+
+    const updatedData = await amenities.findByPk(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "amenities Updated Successfully",
+      data: updatedData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const Deleteamenities = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findData = await amenities.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "amenities Not Found",
+      });
+    }
+
+    await amenities.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "amenities Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  Addamenities,
+  Allamenities,
+  Updateamenities,
+  Deleteamenities,
+};

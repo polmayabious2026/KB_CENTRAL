@@ -52,5 +52,89 @@ const Allpowerbackup = async (req, res) => {
     });
   }
 };
+const Updatepowerbackup = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { bold_title } = req.body;
 
-module.exports = {Addpowerbackup,Allpowerbackup}
+    const findData = await powerbackup.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "powerbackup Not Found",
+      });
+    }
+
+    if (!bold_title && !req.file) {
+      return res.status(400).json({
+        status: false,
+        message: "Provide Title Or Image",
+      });
+    }
+
+    const updateData = {};
+
+    if (bold_title) {
+      updateData.bold_title = bold_title.trim().toUpperCase();
+    }
+
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    await powerbackup.update(updateData, {
+      where: {
+        id: id,
+      },
+    });
+
+    const updatedData = await powerbackup.findByPk(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "powerbackup Updated Successfully",
+      data: updatedData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const Deletepowerbackup = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findData = await powerbackup.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "powerbackup Not Found",
+      });
+    }
+
+    await powerbackup.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "powerbackup Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {Addpowerbackup,Allpowerbackup,Updatepowerbackup,Deletepowerbackup}

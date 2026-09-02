@@ -84,5 +84,132 @@ const Allsmartfeatures = async (req, res) => {
     });
   }
 };
+const Updatesmartfeatures = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-module.exports = { Addsmartfeatures, Allsmartfeatures };
+    const {
+      bulletpoint_one,
+      description_one,
+      bulletpoint_two,
+      description_two,
+      bulletpoint_three,
+      description_three,
+      bulletpoint_four,
+      description_four,
+    } = req.body;
+
+    const findData = await smartfeatures.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "smartfeatures Not Found",
+      });
+    }
+
+    if (
+      !bulletpoint_one &&
+      !description_one &&
+      !bulletpoint_two &&
+      !description_two &&
+      !bulletpoint_three &&
+      !description_three &&
+      !bulletpoint_four &&
+      !description_four
+    ) {
+      return res.status(400).json({
+        status: false,
+        message: "Provide Data To Update",
+      });
+    }
+
+    const updateData = {};
+
+    if (bulletpoint_one) {
+      updateData.bulletpoint_one = bulletpoint_one.trim().toUpperCase();
+    }
+
+    if (description_one) {
+      updateData.description_one = description_one.trim().toUpperCase();
+    }
+
+    if (bulletpoint_two) {
+      updateData.bulletpoint_two = bulletpoint_two.trim().toUpperCase();
+    }
+
+    if (description_two) {
+      updateData.description_two = description_two.trim().toUpperCase();
+    }
+
+    if (bulletpoint_three) {
+      updateData.bulletpoint_three = bulletpoint_three.trim().toUpperCase();
+    }
+
+    if (description_three) {
+      updateData.description_three = description_three.trim().toUpperCase();
+    }
+
+    if (bulletpoint_four) {
+      updateData.bulletpoint_four = bulletpoint_four.trim().toUpperCase();
+    }
+
+    if (description_four) {
+      updateData.description_four = description_four.trim().toUpperCase();
+    }
+
+    await smartfeatures.update(updateData, {
+      where: {
+        id: id,
+      },
+    });
+
+    const updatedData = await smartfeatures.findByPk(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "smartfeatures Updated Successfully",
+      data: updatedData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const Deletesmartfeatures = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findData = await smartfeatures.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "smartfeatures Not Found",
+      });
+    }
+
+    await smartfeatures.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "smartfeatures Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { Addsmartfeatures, Allsmartfeatures, Updatesmartfeatures, Deletesmartfeatures };

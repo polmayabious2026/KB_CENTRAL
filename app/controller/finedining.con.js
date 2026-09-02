@@ -71,5 +71,122 @@ const Allfinedining = async (req, res) => {
     });
   }
 };
+const Updatefinedining = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-module.exports = { Addfinedining, Allfinedining };
+    const {
+      bold_title,
+      description,
+    } = req.body;
+
+    const findData = await finedining.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "Finedining Details Not Found",
+      });
+    }
+
+    const updateData = {};
+
+    if (bold_title) {
+      updateData.bold_title = bold_title;
+    }
+
+    if (description) {
+      updateData.description = description;
+    }
+
+    const option_image_one =
+      req.files?.option_image_one?.[0]?.filename;
+
+    const option_image_two =
+      req.files?.option_image_two?.[0]?.filename;
+
+    const option_image_three =
+      req.files?.option_image_three?.[0]?.filename;
+
+    const option_image_four =
+      req.files?.option_image_four?.[0]?.filename;
+
+    if (option_image_one) {
+      updateData.option_image_one = option_image_one;
+    }
+
+    if (option_image_two) {
+      updateData.option_image_two = option_image_two;
+    }
+
+    if (option_image_three) {
+      updateData.option_image_three = option_image_three;
+    }
+
+    if (option_image_four) {
+      updateData.option_image_four = option_image_four;
+    }
+
+    await finedining.update(updateData, {
+      where: {
+        id: id,
+      },
+    });
+
+    const updatedData = await finedining.findByPk(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "Finedining Details Updated Successfully",
+      data: updatedData,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(400).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
+
+const Deletefinedining = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findData = await finedining.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "Finedining Details Not Found",
+      });
+    }
+
+    await finedining.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "Finedining Details Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  Addfinedining,
+  Allfinedining,
+  Updatefinedining,
+  Deletefinedining,
+};
+

@@ -52,5 +52,94 @@ const Allparking = async (req, res) => {
     });
   }
 };
+const Updateparking = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { bold_title } = req.body;
 
-module.exports = {Addparking,Allparking}
+    const findData = await parking.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "parking Not Found",
+      });
+    }
+
+    if (!bold_title && !req.file) {
+      return res.status(400).json({
+        status: false,
+        message: "Provide Title Or Image",
+      });
+    }
+
+    const updateData = {};
+
+    if (bold_title) {
+      updateData.bold_title = bold_title.trim().toUpperCase();
+    }
+
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    await parking.update(updateData, {
+      where: {
+        id: id,
+      },
+    });
+
+    const updatedData = await parking.findByPk(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "parking Updated Successfully",
+      data: updatedData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const Deleteparking = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findData = await parking.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
+        status: false,
+        message: "parking Not Found",
+      });
+    }
+
+    await parking.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "parking Deleted Successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  Addparking,
+  Allparking,
+  Updateparking,
+  Deleteparking,
+};
