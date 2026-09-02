@@ -25,7 +25,7 @@ dining_router.post(
     { name: "brandlogo_eight", maxCount: 1 },
     { name: "brandlogo_nine", maxCount: 1 },
     { name: "brandlogo_ten", maxCount: 1 },
-    { name: "brandlogo_evelen", maxCount: 1 },
+    { name: "brandlogo_eleven", maxCount: 1 },
   ]),
   AddDiningExperiences,
 );

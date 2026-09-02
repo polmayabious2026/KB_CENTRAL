@@ -2,8 +2,8 @@ const wellnessspaces = require("../model/wellness-spaces");
 
 const AddWellnessSpaces = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
+    // console.log("BODY:", req.body);
+    // console.log("FILES:", req.files);
 
     const { title } = req.body;
 

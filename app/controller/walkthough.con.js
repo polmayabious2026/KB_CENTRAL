@@ -2,14 +2,18 @@ const walkthrough = require("../model/walkthrough");
 
 const Addvideo = async (req, res) => {
   try {
-    const video = req.files?.video?.[0]?.filename;
+    // console.log("FILE:", req.file);
+    // console.log("BODY:", req.body);
+
+    const video = req.file?.filename;
 
     if (!video) {
       return res.status(400).json({
         status: false,
-        message: "Please upload all 5 brand logos",
+        message: "Please upload a video file",
       });
     }
+
     const newvideo = await walkthrough.create({
       video,
     });
@@ -48,7 +52,7 @@ const UpdateVideo = async (req, res) => {
   try {
     const { walkthrough_id } = req.params;
 
-    const video = req.files?.video?.[0]?.filename;
+    const video = req.file?.video?.[0]?.filename;
 
     const videoData = await walkthrough.findByPk(walkthrough_id);
 
@@ -79,7 +83,6 @@ const UpdateVideo = async (req, res) => {
   }
 };
 
-
 const DeleteVideo = async (req, res) => {
   try {
     const { walkthrough_id } = req.params;
@@ -108,10 +111,9 @@ const DeleteVideo = async (req, res) => {
   }
 };
 
-
 module.exports = {
   Addvideo,
   FindAllVideo,
   UpdateVideo,
-  DeleteVideo
+  DeleteVideo,
 };

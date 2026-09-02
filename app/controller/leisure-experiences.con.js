@@ -6,7 +6,7 @@ const Addleisure = async (req, res) => {
         console.log("BODY:", req.body);
         console.log("FILES:", req.files);
 
-        const { bold_title,
+        const {
             option_title_one, 
             option_title_two,
             option_title_three,
@@ -43,7 +43,7 @@ const Addleisure = async (req, res) => {
         }
 
         const newBrand = await leisureexperiences.create({
-            bold_title,
+            
             option_title_one, 
             option_title_two,
             option_title_three,
@@ -89,13 +89,12 @@ const FindAllLeisureData = async (req, res) => {
 };
 const UpdateLeisure = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
+    // console.log("BODY:", req.body);
+    // console.log("FILES:", req.files);
 
     const { leisure_id } = req.params;
 
     const {
-      bold_title,
       option_title_one,
       option_title_two,
       option_title_three,
@@ -123,9 +122,9 @@ const UpdateLeisure = async (req, res) => {
     const option_image_four =
       req.files?.option_image_four?.[0]?.filename;
 
-    if (bold_title) {
-      leisureData.bold_title = bold_title;
-    }
+    // if (bold_title) {
+    //   leisureData.bold_title = bold_title;
+    // }
 
     if (option_title_one) {
       leisureData.option_title_one = option_title_one;

@@ -9,10 +9,10 @@ const leisureSchema = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    bold_title: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
+    // bold_title: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
     option_title_one: {
       type: DataTypes.STRING,
       allowNull: true,

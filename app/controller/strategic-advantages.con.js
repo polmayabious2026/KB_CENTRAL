@@ -2,6 +2,9 @@ const strategic = require("../model/strategic-advantages");
 
 const AddStrategicAdvantages = async (req, res) => {
   try {
+//     console.log("==========================");
+//  console.log("Request Body:", req.body);
+//  console.log("==========================");
     const { description,
       advantages_one,
       advantages_two,
@@ -10,6 +13,8 @@ const AddStrategicAdvantages = async (req, res) => {
       advantages_five,
       advantages_six } = req.body;
 
+      console.log("Request Body:", req.body); // Log the request body for debugging
+      
     if (!description || !advantages_one || !advantages_two || !advantages_three ||!advantages_four||!advantages_five||!advantages_six ) {
       return res.status(400).json({
         status: false,
@@ -18,13 +23,13 @@ const AddStrategicAdvantages = async (req, res) => {
     }
 
     const newData = await strategic.create({
-      description,
-      advantages_one,
-      advantages_two,
-      advantages_three,
-      advantages_four,
-      advantages_five,
-      advantages_six,
+      description:description,
+      advantages_one: advantages_one,
+      advantages_two: advantages_two,
+      advantages_three: advantages_three,
+      advantages_four: advantages_four,
+      advantages_five: advantages_five,
+      advantages_six: advantages_six,
     });
 
     return res.status(201).json({
@@ -96,6 +101,7 @@ const UpdateStrategicAdvantages = async (req, res) => {
     return res.status(200).json({
       status: true,
       message: "Strategic advantage updated successfully",
+      
     });
   } catch (error) {
     return res.status(400).json({

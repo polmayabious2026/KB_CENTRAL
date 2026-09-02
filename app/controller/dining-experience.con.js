@@ -31,7 +31,7 @@ const AddDiningExperiences = async (req, res) => {
             req.files?.brandlogo_nine?.[0]?.filename;
         const brandlogo_ten =
             req.files?.brandlogo_ten?.[0]?.filename;
-        const brandlogo_evelen =
+        const brandlogo_eleven =
             req.files?.brandlogo_eleven?.[0]?.filename;
 
         if (
@@ -45,7 +45,7 @@ const AddDiningExperiences = async (req, res) => {
             brandlogo_eight ||!
             brandlogo_nine||
             !brandlogo_ten ||
-            !brandlogo_evelen ||!dining_photo
+            !brandlogo_eleven ||!dining_photo
         ) {
             return res.status(400).json({
                 status: false,

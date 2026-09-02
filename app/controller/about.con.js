@@ -1,27 +1,47 @@
 const about = require("../model/about");
+const { Op } = require("sequelize");
 
 const AddAboutDetails = async (req, res) => {
   try {
-    // console.log("FILE:", req.file);
-    const { description } = req.body;
-    // console.log("BODY:", req.body);
-    if (!req.file) {
+    const { description_1, description_2, description_3 } = req.body;
+
+    if (!description_1 || !description_2 || !description_3) {
       return res.status(400).json({
         status: false,
-        message: "Descriptions Icon is required",
+        message: "All descriptions are required",
       });
     }
-    if (!description) {
-      return res.status(400).json({
+    const existingDescription = await about.findOne({
+      where: {
+        [Op.or]: [
+          { description_1: description_1 },
+          { description_2: description_1 },
+          { description_3: description_1 },
+
+          { description_1: description_2 },
+          { description_2: description_2 },
+          { description_3: description_2 },
+
+          { description_1: description_3 },
+          { description_2: description_3 },
+          { description_3: description_3 },
+        ],
+      },
+    });
+
+    if (existingDescription) {
+      return res.status(409).json({
         status: false,
-        message: "Description is required",
+        message: "One or more descriptions already exist in the database",
       });
     }
 
     const newAboutdetails = await about.create({
-      icon: req.file.filename,
-      description: description,
+      description_1,
+      description_2,
+      description_3,
     });
+
     return res.status(201).json({
       status: true,
       message: "About Page Details Added Successfully",
@@ -30,11 +50,12 @@ const AddAboutDetails = async (req, res) => {
   } catch (error) {
     return res.status(400).json({
       status: false,
-      message: "Something Went Wrong ",
+      message: "Something Went Wrong",
       error: error.message,
     });
   }
 };
+
 const FindAllAbout = async (req, res) => {
   try {
     const allAboutDetails = await about.findAll();
@@ -54,7 +75,7 @@ const FindAllAbout = async (req, res) => {
 const UpdateAboutDetails = async (req, res) => {
   try {
     const { id } = req.params;
-    const { description } = req.body;
+    const { description_1, description_2, description_3 } = req.body;
 
     const aboutDetails = await about.findByPk(id);
 
@@ -65,19 +86,68 @@ const UpdateAboutDetails = async (req, res) => {
       });
     }
 
-    if (!req.file && !description) {
+    if (!description_1 && !description_2 && !description_3) {
       return res.status(400).json({
         status: false,
-        message: "Description or Descriptions Icon is required",
+        message: "At least one description is required",
       });
     }
 
-    if (req.file) {
-      aboutDetails.icon = req.file.filename;
+    // Check duplicate descriptions in other records
+    const duplicateDescription = await about.findOne({
+      where: {
+        id: {
+          [Op.ne]: id, // Exclude current record
+        },
+        [Op.or]: [
+          // description_1
+          ...(description_1
+            ? [
+                { description_1: description_1 },
+                { description_2: description_1 },
+                { description_3: description_1 },
+              ]
+            : []),
+
+          // description_2
+          ...(description_2
+            ? [
+                { description_1: description_2 },
+                { description_2: description_2 },
+                { description_3: description_2 },
+              ]
+            : []),
+
+          // description_3
+          ...(description_3
+            ? [
+                { description_1: description_3 },
+                { description_2: description_3 },
+                { description_3: description_3 },
+              ]
+            : []),
+        ],
+      },
+    });
+
+    if (duplicateDescription) {
+      return res.status(409).json({
+        status: false,
+        message: "One or more descriptions already exist in the database",
+      });
     }
 
-    if (description) {
-      aboutDetails.description = description;
+    // Update only the fields that were provided
+    if (description_1) {
+      aboutDetails.description_1 = description_1;
+    }
+
+    if (description_2) {
+      aboutDetails.description_2 = description_2;
+    }
+
+    if (description_3) {
+      aboutDetails.description_3 = description_3;
     }
 
     await aboutDetails.save();
@@ -95,7 +165,6 @@ const UpdateAboutDetails = async (req, res) => {
     });
   }
 };
-
 const DeleteAboutDetails = async (req, res) => {
   try {
     const { id } = req.params;

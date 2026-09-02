@@ -9,8 +9,16 @@ const aboutSchema = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    icon: { type: DataTypes.STRING, allowNull: false },
-    description: {
+    // icon: { type: DataTypes.STRING, allowNull: false },
+    description_1: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description_2: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description_3: {
       type: DataTypes.STRING,
       allowNull: false,
     },
