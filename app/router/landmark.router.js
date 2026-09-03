@@ -10,7 +10,7 @@ const {
 }= require("../controller/landmark.con");
 
 // add /api/admin before routes
-landmark_router.post("/add_landmarks", upload.single("image"), AddLandmark);
+landmark_router.post("/add_landmarks", upload.single("map_image"), AddLandmark);
 landmark_router.get("/getall_landmarks", FindLandmarkData);
 landmark_router.put(
   "/update_landmark/:landmark_id",

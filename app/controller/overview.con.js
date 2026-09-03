@@ -3,7 +3,7 @@ const overviews = require("../model/overview");
 const AddOverview = async (req, res) => {
   try {
     const { bold_title, description } = req.body;
-    if (!bold_title || description) {
+    if (!bold_title || !description) {
       return res.status(400).json({
         status: false,
         message: "Provide Title And Description",

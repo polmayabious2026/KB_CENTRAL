@@ -11,7 +11,8 @@ const diningexperiences = require("../model/dining-experiences")
 const floorplans = require("../model/floor-plans")
 const walkthrough = require("../model/walkthrough")
 const leisureexperiences= require("../model/leisure-experiences")
-const landmark = require("../model/landmark")
+const Landmark = require("../model/landmark")
+const LandmarkPoint = require("../model/landmark_points")
 const overview = require("../model/overview")
 const locationadvantages = require("../model/location_advantages")
 const connectivity = require("../model/connectivity")
@@ -31,12 +32,22 @@ const aboutavoragroup = require("./aboutavora-group")
 const ourlegacy = require("./our-legacy")
 const visionphilosophy = require("./vision&philosophy")
 const contact = require("./contact")
+const admin = require("./admin.model")
 
 
 
 
 
 
+Landmark.hasMany(LandmarkPoint, {
+  foreignKey: "landmark_id",
+  as: "landmarks",
+});
+
+LandmarkPoint.belongsTo(Landmark, {
+  foreignKey: "landmark_id",
+  as: "map",
+});
 
 sequelize.sync()
 .then(()=>console.log("Db Synced Successfully"))

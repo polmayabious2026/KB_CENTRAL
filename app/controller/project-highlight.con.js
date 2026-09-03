@@ -12,7 +12,7 @@ const Addprojecthighlight = async (req, res) => {
     if (!bold_title ) {
       return res.status(400).json({
         status: false,
-        message: "Provide Title And Description",
+        message: "Provide Bold_title",
       });
     }
     const uppercaseBoldtitle = bold_title.trim(" ").toUpperCase();

@@ -9,7 +9,7 @@ const Addconnectivity = async (req, res) => {
                 message: "Image is required",
             });
         }
-    if (!bold_title || description) {
+    if (!bold_title || !description) {
       return res.status(400).json({
         status: false,
         message: "Provide Title And Description",

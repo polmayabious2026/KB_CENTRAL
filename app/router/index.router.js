@@ -1,7 +1,9 @@
 const express = require("express")
 const router = express.Router()
+const {adminAuth} = require("../middleware/admin_check")
 
 router.use("/admin",require("./web.logo.router"))
+// router.use("/admin",adminAuth,require("./web.logo.router"))
 router.use("/admin",require("./menu.router"))
 router.use("/admin",require("./submenu.router"))
 router.use("/admin",require("./coverphoto.router"))
@@ -38,6 +40,7 @@ router.use("/admin",require("./previous.projects.router"))
 router.use("/admin",require("./contact.router"))
 router.use("/admin",require("./aboutavoragroup.router"))
 router.use("/admin",require("./wellness.spaces.router"))
+router.use("/admin",require("./admin.router"))
 
 
 
