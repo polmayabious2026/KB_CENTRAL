@@ -15,6 +15,10 @@ const powerbackup = sequielize.define(
         type:DataTypes.STRING,
         allowNull:false,
     },
+    description:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
     created_at:{
         type:DataTypes.DATE
     },

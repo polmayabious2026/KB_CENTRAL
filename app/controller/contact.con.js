@@ -2,14 +2,15 @@ const contact = require("../model/contact");
 
 const Addcontact = async (req, res) => {
   try {
-    const { phone_no,email,altername_email,address } = req.body;
+
+    const { phone_no,email,alternate_email,address } = req.body;
     if (!req.file) {
             return res.status(400).json({
                 status: false,
                 message: "Image is required",
             });
         }
-    if (!phone_no||!email||!altername_email||!address) {
+    if (!phone_no||!email||!alternate_email||!address) {
       return res.status(400).json({
         status: false,
         message: "Provide All Details ",
@@ -18,7 +19,7 @@ const Addcontact = async (req, res) => {
     const createData = await contact.create({
      phone_no,
      email,
-     altername_email,
+     alternate_email,
      address ,
     image:req.file.filename,
     });

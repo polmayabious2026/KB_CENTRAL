@@ -7,7 +7,7 @@ const ourlegacySchema = sequelize.define("ourlegacy",{
         primaryKey:true,
         autoIncrement:true,
     },
-    titile:{
+    title:{
         type:DataTypes.STRING,
         allowNull:false,
     },

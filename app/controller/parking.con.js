@@ -2,14 +2,14 @@ const parking = require("../model/parking");
 
 const Addparking = async (req, res) => {
   try {
-    const { bold_title } = req.body;
+    const { bold_title,description } = req.body;
     if (!req.file) {
             return res.status(400).json({
                 status: false,
                 message: "Image is required",
             });
         }
-    if (!bold_title ) {
+    if (!bold_title||!description ) {
       return res.status(400).json({
         status: false,
         message: "Provide Title And Description",
@@ -19,6 +19,7 @@ const Addparking = async (req, res) => {
     const createData = await parking.create({
       bold_title: uppercaseBoldtitle,
       image:req.file.filename,
+      description,
     });
 
     return res.status(201).json({

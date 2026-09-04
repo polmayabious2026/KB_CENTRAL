@@ -27,6 +27,7 @@ const experiences = require("./experience")
 const amenities = require("./amenities")
 const powerbackup = require("./power-backup")
 const accessibility = require("./accessibility")
+const accessibilityPoints = require("./accessibilitypoints")
 const smartfeatures = require("./smart-features")
 const aboutavoragroup = require("./aboutavora-group")
 const ourlegacy = require("./our-legacy")
@@ -38,7 +39,7 @@ const admin = require("./admin.model")
 
 
 
-
+// landmark
 Landmark.hasMany(LandmarkPoint, {
   foreignKey: "landmark_id",
   as: "landmarks",
@@ -48,6 +49,16 @@ LandmarkPoint.belongsTo(Landmark, {
   foreignKey: "landmark_id",
   as: "map",
 });
+// accessibility
+accessibility.hasMany(accessibilityPoints, {
+  foreignKey: "accessibility_id",
+  as: "accessibilityPoints",
+});
+accessibilityPoints.belongsTo(accessibility, {
+  foreignKey: "accessibility_id",
+  as: "accessibility",
+});
+
 
 sequelize.sync()
 .then(()=>console.log("Db Synced Successfully"))

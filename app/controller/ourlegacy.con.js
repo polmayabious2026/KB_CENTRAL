@@ -2,16 +2,21 @@ const ourlegacy = require("../model/our-legacy");
 
 const Addourlegacy = async (req, res) => {
   try {
-    const { description} = req.body;
+
+    console.log("==============")
+    console.log("data:",req.body)
+    console.log("==============")
+    const { title,description} = req.body;
     
-    if (!description ) {
+    if (!description||!title ) {
       return res.status(400).json({
         status: false,
         message: "Provide Description",
       });
     }
     const createData = await ourlegacy.create({
-      description,
+      description:description,
+      title:title,
     });
 
     return res.status(201).json({

@@ -11,7 +11,7 @@ const previousprojects = sequelize.define("previousprojects",{
         type:DataTypes.STRING,
         allowNull:false,
     },
-    titile:{
+    title:{
         type:DataTypes.STRING,
         allowNull:false,
     },

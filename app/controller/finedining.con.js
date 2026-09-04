@@ -2,8 +2,8 @@ const finedining = require("../model/fine-dining");
 
 const Addfinedining = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
+    // console.log("BODY:", req.body);
+    // console.log("FILES:", req.files);
 
     const {
       bold_title,
@@ -24,10 +24,10 @@ const Addfinedining = async (req, res) => {
 
     const option_image_four = req.files?.option_image_four?.[0]?.filename;
 
-    if (!option_image_one || !option_image_two || !option_image_three||option_image_four ) {
+    if (!option_image_one || !option_image_two || !option_image_three||!option_image_four ) {
       return res.status(400).json({
         status: false,
-        message: "Please upload all 3 Option Images",
+        message: "Please upload all 4 Option Images",
       });
     }
 

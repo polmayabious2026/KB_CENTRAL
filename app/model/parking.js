@@ -15,6 +15,9 @@ const parking = sequielize.define(
         type:DataTypes.STRING,
         allowNull:false,
     },
+    description:{
+        type:DataTypes.STRING
+    },
     created_at:{
         type:DataTypes.DATE
     },

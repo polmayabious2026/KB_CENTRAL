@@ -2,7 +2,7 @@ const visionphilosophy = require("../model/vision&philosophy");
 
 const Addvisionphilosophy = async (req, res) => {
   try {
-    const { description} = req.body;
+    const { description, title} = req.body;
     
     if (!description ) {
       return res.status(400).json({
@@ -11,7 +11,8 @@ const Addvisionphilosophy = async (req, res) => {
       });
     }
     const createData = await visionphilosophy.create({
-      description,
+      description:description,
+      title:title,
     });
 
     return res.status(201).json({

@@ -11,46 +11,6 @@ const accessibilitySchema = sequelize.define("accessibility",{
         type:DataTypes.STRING,
         allowNull:false,
     },
-    bulletpoint_one:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
-    description_one:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
-    bulletpoint_two:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
-    description_two:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
-    bulletpoint_three:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
-    description_three:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
-    bulletpoint_four:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
-    description_four:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
-    bulletpoint_five:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
-    description_five:{
-        type:DataTypes.STRING,
-        allowNull:false,
-    },
     created_at:{
         type:DataTypes.DATE
     },

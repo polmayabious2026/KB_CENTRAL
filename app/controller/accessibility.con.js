@@ -1,243 +1,264 @@
 const accessibility = require("../model/accessibility");
+const accessibilityPointsModel = require("../model/accessibilitypoints");
+const sequelize = require("../config/dB");
+const fs = require("fs");
 
 const Addaccessibility = async (req, res) => {
   try {
-    const {
-      bulletpoint_one,
-      description_one,
-      bulletpoint_two,
-      description_two,
-      bulletpoint_three,
-      description_three,
-      bulletpoint_four,
-      description_four,
-      bulletpoint_five,
-      description_five,
-    } = req.body;
+    const { bulletpoint, description } = req.body;
+
     if (!req.file) {
       return res.status(400).json({
         status: false,
-        message: "Image is required",
+        message: "Please upload accessibility image",
       });
     }
-    if (
-      !bulletpoint_one ||
-      !bulletpoint_two ||
-      !bulletpoint_three ||
-      !bulletpoint_four ||
-      !bulletpoint_five
-    ) {
-      return res.status(400).json({
-        status: false,
-        message: "Provide All BulletPoints",
-      });
-    }
-    if (
-      !description_one ||
-      !description_two ||
-      !description_three ||
-      !description_four ||
-      !description_five
-    ) {
-      return res.status(400).json({
-        status: false,
-        message: "Provide All Descriptions",
-      });
-    }
-    const uppercasebulletpoint_one = bulletpoint_one.trim().toUpperCase();
-    const uppercasebulletpoint_two = bulletpoint_two.trim().toUpperCase();
-    const uppercasebulletpoint_three = bulletpoint_three.trim().toUpperCase();
-    const uppercasebulletpoint_four = bulletpoint_four.trim().toUpperCase();
-    const uppercasebulletpoint_five = bulletpoint_five.trim().toUpperCase();
 
-    const createData = await accessibility.create({
-      bulletpoint_one: uppercasebulletpoint_one,
-      description_one,
-      bulletpoint_two: uppercasebulletpoint_two,
-      description_two,
-      bulletpoint_three: uppercasebulletpoint_three,
-      description_three,
-      bulletpoint_four: uppercasebulletpoint_four,
-      description_four,
-      bulletpoint_five: uppercasebulletpoint_five,
-      description_five,
+    if (!bulletpoint || !description) {
+      return res.status(400).json({
+        status: false,
+        message: "Please provide bulletpoint and description",
+      });
+    }
+
+    const bulletpoints = Array.isArray(bulletpoint)
+      ? bulletpoint
+      : [bulletpoint];
+
+    const descriptions = Array.isArray(description)
+      ? description
+      : [description];
+
+    if (bulletpoints.length !== descriptions.length) {
+      return res.status(400).json({
+        status: false,
+        message: "Each bulletpoint must have a description",
+      });
+    }
+
+    const newAccessibility = await accessibility.create({
       image: req.file.filename,
     });
 
+    const accessibilityData = bulletpoints.map((item, index) => ({
+      accessibility_id: newAccessibility.id,
+      bulletpoint: item.trim().toUpperCase(),
+      description: descriptions[index],
+    }));
+
+    await accessibilityPointsModel.bulkCreate(accessibilityData);
+
     return res.status(201).json({
       status: true,
-      message: "Accessibility Added Successfully",
-      data: createData,
+      message: "Accessibility added successfully",
+      data: {
+        id: newAccessibility.id,
+        image: newAccessibility.image,
+        accessibility: accessibilityData,
+      },
     });
   } catch (error) {
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
-      message: "Something Went wrong",
-      error:error.message,
+      message: "Something went wrong",
+      error: error.message,
     });
   }
 };
+
 
 const Allaccessibility = async (req, res) => {
   try {
-    const findData = await accessibility.findAll();
+    const allData = await accessibility.findAll({
+      include: [
+        {
+          model: accessibilityPointsModel,
+          as: "accessibilityPoints",
+        },
+      ],
+    });
 
     return res.status(200).json({
       status: true,
-      message: "All accessibility Fetched Successfully",
-      data: findData,
+      message: "All accessibility details fetched successfully",
+      data: allData,
     });
   } catch (error) {
     return res.status(400).json({
       status: false,
-      message: "Something Went wrong",
-      error:error.message,
+      message: "Something went wrong",
+      error: error.message,
     });
   }
 };
+
+
 const Updateaccessibility = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { accessibility_id } = req.params;
+    const { bulletpoint, description } = req.body;
 
-    const {
-      bulletpoint_one,
-      description_one,
-      bulletpoint_two,
-      description_two,
-      bulletpoint_three,
-      description_three,
-      bulletpoint_four,
-      description_four,
-      bulletpoint_five,
-      description_five,
-    } = req.body;
+    const accessibilityData = await accessibility.findByPk(accessibility_id);
 
-    const findData = await accessibility.findByPk(id);
-
-    if (!findData) {
+    if (!accessibilityData) {
       return res.status(404).json({
         status: false,
-        message: "accessibility Not Found",
+        message: "Accessibility Not Found",
       });
     }
 
-    if (
-      !bulletpoint_one &&
-      !description_one &&
-      !bulletpoint_two &&
-      !description_two &&
-      !bulletpoint_three &&
-      !description_three &&
-      !bulletpoint_four &&
-      !description_four &&
-      !bulletpoint_five &&
-      !description_five &&
-      !req.file
-    ) {
+    if (!bulletpoint || !description) {
       return res.status(400).json({
         status: false,
-        message: "Provide Data To Update",
+        message: "Please provide bulletpoint and description",
       });
     }
 
-    const updateData = {};
+    const bulletpoints = Array.isArray(bulletpoint)
+      ? bulletpoint
+      : [bulletpoint];
 
-    if (bulletpoint_one) {
-      updateData.bulletpoint_one = bulletpoint_one.trim().toUpperCase();
+    const descriptions = Array.isArray(description)
+      ? description
+      : [description];
+
+    if (bulletpoints.length !== descriptions.length) {
+      return res.status(400).json({
+        status: false,
+        message: "Each bulletpoint must have a description",
+      });
     }
 
-    if (description_one) {
-      updateData.description_one = description_one;
-    }
-
-    if (bulletpoint_two) {
-      updateData.bulletpoint_two = bulletpoint_two.trim().toUpperCase();
-    }
-
-    if (description_two) {
-      updateData.description_two = description_two;
-    }
-
-    if (bulletpoint_three) {
-      updateData.bulletpoint_three = bulletpoint_three.trim().toUpperCase();
-    }
-
-    if (description_three) {
-      updateData.description_three = description_three;
-    }
-
-    if (bulletpoint_four) {
-      updateData.bulletpoint_four = bulletpoint_four.trim().toUpperCase();
-    }
-
-    if (description_four) {
-      updateData.description_four = description_four;
-    }
-
-    if (bulletpoint_five) {
-      updateData.bulletpoint_five = bulletpoint_five.trim().toUpperCase();
-    }
-
-    if (description_five) {
-      updateData.description_five = description_five;
-    }
-
+    // Update image if new image is uploaded
     if (req.file) {
-      updateData.image = req.file.filename;
+      const oldImage = accessibilityData.image;
+
+      accessibilityData.image = req.file.filename;
+
+      await accessibilityData.save();
+
+      // Delete old image
+      if (oldImage) {
+        try {
+          await fs.promises.unlink(`uploads/${oldImage}`);
+          console.log("Old accessibility image deleted:", oldImage);
+        } catch (fileError) {
+          console.log(
+            "Failed to delete old accessibility image:",
+            fileError.message
+          );
+        }
+      }
     }
 
-    await accessibility.update(updateData, {
+    // Delete old accessibility points
+    await accessibilityPointsModel.destroy({
       where: {
-        id: id,
+        accessibility_id: accessibility_id,
       },
     });
 
-    const updatedData = await accessibility.findByPk(id);
+    // Create new accessibility points
+    const accessibilityDataArray = bulletpoints.map((item, index) => ({
+      accessibility_id: accessibility_id,
+      bulletpoint: item.trim().toUpperCase(),
+      description: descriptions[index],
+    }));
+
+    await accessibilityPointsModel.bulkCreate(accessibilityDataArray);
 
     return res.status(200).json({
       status: true,
-      message: "accessibility Updated Successfully",
-      data: updatedData,
+      message: "Accessibility updated successfully",
+      data: {
+        id: accessibilityData.id,
+        image: accessibilityData.image,
+        accessibility: accessibilityDataArray,
+      },
     });
   } catch (error) {
-    return res.status(400).json({
+    console.log("Update Accessibility Error:", error);
+
+    return res.status(500).json({
       status: false,
-      message: "Something Went wrong",
+      message: "Something went wrong",
       error: error.message,
     });
   }
 };
+
 
 const Deleteaccessibility = async (req, res) => {
+  const t = await sequelize.transaction();
+
   try {
-    const { id } = req.params;
+    const { accessibility_id } = req.params;
 
-    const findData = await accessibility.findByPk(id);
+    const accessibilityData = await accessibility.findByPk(
+      accessibility_id
+    );
 
-    if (!findData) {
+    if (!accessibilityData) {
+      await t.rollback();
+
       return res.status(404).json({
         status: false,
-        message: "accessibility Not Found",
+        message: "Accessibility Not Found",
       });
     }
 
-    await accessibility.destroy({
+    const image = accessibilityData.image;
+
+    // Delete accessibility points
+    await accessibilityPointsModel.destroy({
       where: {
-        id: id,
+        accessibility_id: accessibility_id,
       },
+      transaction: t,
     });
+
+    // Delete main accessibility record
+    await accessibilityData.destroy({
+      transaction: t,
+    });
+
+    await t.commit();
+
+    // Delete image from uploads folder
+    if (image) {
+      try {
+        await fs.promises.unlink(`uploads/${image}`);
+
+        console.log("Accessibility image deleted:", image);
+      } catch (fileError) {
+        console.log(
+          "Failed to delete accessibility image:",
+          fileError.message
+        );
+      }
+    }
 
     return res.status(200).json({
       status: true,
-      message: "accessibility Deleted Successfully",
+      message: "Accessibility Deleted Successfully",
     });
   } catch (error) {
-    return res.status(400).json({
+    await t.rollback();
+
+    console.log("Delete Accessibility Error:", error);
+
+    return res.status(500).json({
       status: false,
-      message: "Something Went wrong",
+      message: "Something Went Wrong",
       error: error.message,
     });
   }
 };
 
-module.exports = { Addaccessibility, Allaccessibility, Updateaccessibility, Deleteaccessibility };
+
+module.exports = {
+  Addaccessibility,
+  Allaccessibility,
+  Updateaccessibility,
+  Deleteaccessibility,
+};

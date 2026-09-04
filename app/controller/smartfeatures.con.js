@@ -2,6 +2,11 @@ const smartfeatures = require("../model/smart-features");
 
 const Addsmartfeatures = async (req, res) => {
   try {
+
+    console.log("============================")
+
+    console.log("Data:",req.body)
+    console.log("============================")
     const {
       bulletpoint_one,
       description_one,
@@ -37,11 +42,11 @@ const Addsmartfeatures = async (req, res) => {
       });
     }
     const uppercasebulletpoint_one = bulletpoint_one.trim(" ").toUpperCase();
-    const uppercasedescription_two = description_two.trim(" ").toUpperCase();
-    const uppercasedescription_three = description_three
+    const uppercasedescription_two = bulletpoint_two.trim(" ").toUpperCase();
+    const uppercasedescription_three = bulletpoint_three
       .trim(" ")
       .toUpperCase();
-    const uppercasedescription_four = description_four.trim(" ").toUpperCase();
+    const uppercasedescription_four = bulletpoint_four.trim(" ").toUpperCase();
     
 
     const createData = await smartfeatures.create({
@@ -49,6 +54,10 @@ const Addsmartfeatures = async (req, res) => {
       bulletpoint_two: uppercasedescription_two,
       bulletpoint_three: uppercasedescription_three,
       bulletpoint_four: uppercasedescription_four,
+      description_one,
+      description_two,
+      description_three,
+      description_four,
       
      
     });
@@ -131,7 +140,7 @@ const Updatesmartfeatures = async (req, res) => {
     }
 
     if (description_one) {
-      updateData.description_one = description_one.trim().toUpperCase();
+      updateData.description_one;
     }
 
     if (bulletpoint_two) {
@@ -139,7 +148,7 @@ const Updatesmartfeatures = async (req, res) => {
     }
 
     if (description_two) {
-      updateData.description_two = description_two.trim().toUpperCase();
+      updateData.description_two;
     }
 
     if (bulletpoint_three) {
@@ -147,7 +156,7 @@ const Updatesmartfeatures = async (req, res) => {
     }
 
     if (description_three) {
-      updateData.description_three = description_three.trim().toUpperCase();
+      updateData.description_three;
     }
 
     if (bulletpoint_four) {
@@ -155,7 +164,7 @@ const Updatesmartfeatures = async (req, res) => {
     }
 
     if (description_four) {
-      updateData.description_four = description_four.trim().toUpperCase();
+      updateData.description_four;
     }
 
     await smartfeatures.update(updateData, {
