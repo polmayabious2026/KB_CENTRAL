@@ -73,7 +73,12 @@ const AddLandmark = async (req, res) => {
 
 const FindLandmarkData = async (req, res) => {
   try {
-    const allData = await landamarks.findAll();
+    const allData = await landamarks.findAll({
+      include:[{
+        model:landmarkPointsModel,
+        as: "landmarks",
+      }]
+    });
     return res.status(200).json({
       status: true,
       message: "All landamark Details Fetched Successfully",

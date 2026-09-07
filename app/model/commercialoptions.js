@@ -1,35 +1,39 @@
 const sequelize = require("../config/dB");
 const { DataTypes } = require("sequelize");
 
-const commercialecosystemSchema = sequelize.define(
-  "commercial-ecosystem",
+const commercialoptionSchema = sequelize.define(
+  "commercialoptins",
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    image: {
+
+    commercial_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    option: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
+
     created_at: {
       type: DataTypes.DATE,
     },
+
     updated_at: {
       type: DataTypes.DATE,
     },
   },
   {
-    tableName: "commercial-ecosystem",
+    tableName: "commercialoptins",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-  },
+  }
 );
 
-module.exports = commercialecosystemSchema;
+module.exports = commercialoptionSchema;

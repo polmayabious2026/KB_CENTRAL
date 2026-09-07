@@ -5,7 +5,9 @@ const menu = require("../model/menu")
 const submenu = require("../model/submenu")
 const coverphoto = require("../model/coverphotos")
 const strategicadvantages = require("../model/strategic-advantages")
+const strategicoption = require("../model/strategicadvantages-options")
 const commercialecosystem = require("../model/commercial-ecosystem")
+const commercialoption = require("../model/commercialoptions")
 const brands = require("../model/brands")
 const diningexperiences = require("../model/dining-experiences")
 const floorplans = require("../model/floor-plans")
@@ -57,6 +59,25 @@ accessibility.hasMany(accessibilityPoints, {
 accessibilityPoints.belongsTo(accessibility, {
   foreignKey: "accessibility_id",
   as: "accessibility",
+});
+
+// strategy-advantages
+strategicadvantages.hasMany(strategicoption, {
+  foreignKey: "strategic_id",
+  as: "strategicoption",
+});
+strategicoption.belongsTo(strategicadvantages, {
+  foreignKey: "strategic_id",
+  as: "strategicadvantages",
+});
+// commercial-ecosystem
+commercialecosystem.hasMany(commercialoption, {
+  foreignKey: "commercial_id",
+  as: "commercialoption",
+});
+commercialoption.belongsTo(commercialecosystem, {
+  foreignKey: "commercial_id",
+  as: "commercialecosystem",
 });
 
 

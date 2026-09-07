@@ -1,15 +1,14 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dB");
 
-const strategicSchema = sequelize.define(
-  "strategic-advantages",
+const strategicoptionSchema = sequelize.define(
+  "strategicoptions",
   {
-    id: {
+    strategic_id: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+       allowNull: false,
     },
-    description: {
+    option: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -17,11 +16,11 @@ const strategicSchema = sequelize.define(
     updated_at: { type: DataTypes.DATE },
   },
   {
-    tableName: "strategic-advantages",
+    tableName: "strategicoptions",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   },
 );
 
-module.exports = strategicSchema;
+module.exports = strategicoptionSchema;
