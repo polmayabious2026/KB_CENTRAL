@@ -3,16 +3,23 @@ const sequelize = require("../config/dB")
 const websitelogo = require("../model/websitelogo")
 const menu = require("../model/menu")
 const submenu = require("../model/submenu")
+const about = require("../model/about")
+const aboutoption = require("../model/aboutoption")
 const coverphoto = require("../model/coverphotos")
 const strategicadvantages = require("../model/strategic-advantages")
 const strategicoption = require("../model/strategicadvantages-options")
 const commercialecosystem = require("../model/commercial-ecosystem")
 const commercialoption = require("../model/commercialoptions")
 const brands = require("../model/brands")
+const brandlogooption = require("../model/brandlogooption")
 const diningexperiences = require("../model/dining-experiences")
+const diningLogo = require("../model/dininglogooption")
+const wellnessspaces = require("../model/wellness-spaces")
+const wellnessspaceoptions = require("../model/wellspacesoption")
 const floorplans = require("../model/floor-plans")
 const walkthrough = require("../model/walkthrough")
 const leisureexperiences= require("../model/leisure-experiences")
+const leisureoptions= require("../model/leisureoptions")
 const Landmark = require("../model/landmark")
 const LandmarkPoint = require("../model/landmark_points")
 const overview = require("../model/overview")
@@ -21,8 +28,11 @@ const connectivity = require("../model/connectivity")
 const projecthighlight = require("../model/project-highlight")
 const retailbrands = require("../model/retail&brands")
 const globalfashion = require("./globalfashion")
+const globalfashionoption = require("./globalfashionoption")
 const accessorylabel = require("./accessory-labels")
+const accessorylabeloption = require("./accessorylablesoption")
 const finedining = require("./fine-dining")
+const finediningoption = require("./finediningoption")
 const wellness = require("./wellness")
 const events = require("./events")
 const experiences = require("./experience")
@@ -31,6 +41,7 @@ const powerbackup = require("./power-backup")
 const accessibility = require("./accessibility")
 const accessibilityPoints = require("./accessibilitypoints")
 const smartfeatures = require("./smart-features")
+const smartfeaturesoption = require("./smartfeatureoption")
 const aboutavoragroup = require("./aboutavora-group")
 const ourlegacy = require("./our-legacy")
 const visionphilosophy = require("./vision&philosophy")
@@ -78,6 +89,96 @@ commercialecosystem.hasMany(commercialoption, {
 commercialoption.belongsTo(commercialecosystem, {
   foreignKey: "commercial_id",
   as: "commercialecosystem",
+});
+
+// brand
+brands.hasMany(brandlogooption, {
+  foreignKey: "brand_id",
+  as: "brandoption",
+});
+brandlogooption.belongsTo(brands, {
+  foreignKey: "brand_id",
+  as: "brand",
+});
+// dining-experience
+diningexperiences.hasMany(diningLogo, {
+  foreignKey: "dining_id",
+  as: "diningoption",
+});
+diningLogo.belongsTo(diningexperiences, {
+  foreignKey: "dining_id",
+  as: "diningexperience",
+});
+// wellness-spaces
+wellnessspaces.hasMany(wellnessspaceoptions, {
+  foreignKey: "  wellnessspaces_id",
+  as: "brandlogooption",
+});
+wellnessspaceoptions.belongsTo(wellnessspaces, {
+  foreignKey: "  wellnessspaces_id",
+  as: "wellnessspaces",
+});
+// lesire-experience
+leisureexperiences.hasMany(leisureoptions, {
+  foreignKey: "leisure_id",
+  as: "options",
+});
+
+leisureoptions.belongsTo(leisureexperiences, {
+  foreignKey: "leisure_id",
+  as: "leisure",
+});
+
+// about
+about.hasMany(aboutoption, {
+  foreignKey: "about_id",
+  as: "descriptions",
+});
+
+aboutoption.belongsTo(about, {
+  foreignKey: "about_id",
+  as: "about",
+});
+// globalfashion
+globalfashion.hasMany(globalfashionoption, {
+  foreignKey: "global_fashion_id",
+  as: "globalfashionoptions",
+});
+
+globalfashionoption.belongsTo(globalfashion, {
+  foreignKey: "global_fashion_id",
+  as: "globalfashion",
+});
+// accessorylabels
+accessorylabel.hasMany(accessorylabeloption, {
+  foreignKey: "accessorylabel_id",
+  as: "accessorylabeloptions",
+});
+
+accessorylabeloption.belongsTo(accessorylabel, {
+  foreignKey: "accessorylabel_id",
+  as: "accessorylabel",
+});
+// finedining
+finedining.hasMany(finediningoption, {
+  foreignKey: "finedining_id",
+  as: "finediningoptions",
+});
+
+finediningoption.belongsTo(finedining, {
+  foreignKey: "finedining_id",
+  as: "finedining",
+});
+
+// smartfeature
+smartfeatures.hasMany(smartfeaturesoption, {
+  foreignKey: "smartfeature_id",
+  as: "smartfeatureoptions",
+});
+
+smartfeaturesoption.belongsTo(smartfeatures, {
+  foreignKey: "smartfeature_id",
+  as: "smartfeatures",
 });
 
 

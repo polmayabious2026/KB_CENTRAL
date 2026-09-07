@@ -17,30 +17,6 @@ const globalfashionSchema = sequelize.define(
         type:DataTypes.STRING,
         allowNull:false,
     },
-    option_title_one: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    option_image_one: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    option_title_two: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    option_image_two: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    option_title_three: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    option_image_three: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     created_at: {
       type: DataTypes.DATE,
     },

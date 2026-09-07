@@ -17,22 +17,6 @@ const finediningSchema = sequelize.define(
         type:DataTypes.STRING,
         allowNull:false,
     },
-    option_image_one: {
-      type: DataTypes.STRING,
-      allowNull: false, 
-    },
-    option_image_two: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    option_image_three: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    option_image_four: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     created_at: {
       type: DataTypes.DATE,
     },

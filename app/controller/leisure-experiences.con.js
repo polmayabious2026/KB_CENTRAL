@@ -1,107 +1,148 @@
+const leisureexperiences = require("../model/leisure-experiences");
+const leisureoptions = require("../model/leisureoptions");
 
-const leisureexperiences = require("../model/leisure-experiences")
 
+// ==========================================
+// ADD LEISURE
+// ==========================================
 const Addleisure = async (req, res) => {
-    try {
-        console.log("BODY:", req.body);
-        console.log("FILES:", req.files);
+  try {
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
 
-        const {
-            option_title_one, 
-            option_title_two,
-            option_title_three,
-            option_title_four} = req.body;
-        if(!req.body){
-            return res.status(400).json({
-                status: false,
-                message: "Please Provide All Titles"
-            });
-        }
+    const { option_title } = req.body;
 
-        const option_image_one =
-            req.files?.option_image_one?.[0]?.filename;
+    // option_title can be:
+    // ["Swimming", "Golf", "Spa"]
+    //
+    // OR if FormData sends it as a string:
+    // '["Swimming","Golf","Spa"]'
 
-        const option_image_two =
-            req.files?.option_image_two?.[0]?.filename;
+    let titles = option_title;
 
-        const option_image_three =
-            req.files?.option_image_three?.[0]?.filename;
-
-        const option_image_four =
-            req.files?.option_image_four?.[0]?.filename;
-
-        if (
-            !option_image_one ||
-            !option_image_two ||
-            !option_image_three ||
-            !option_image_four 
-        ) {
-            return res.status(400).json({
-                status: false,
-                message: "Please upload all 5 Option Images"
-            });
-        }
-
-        const newBrand = await leisureexperiences.create({
-            
-            option_title_one, 
-            option_title_two,
-            option_title_three,
-            option_title_four,
-            option_image_one,
-            option_image_two,
-            option_image_three,
-            option_image_four
-
-        });
-
-        return res.status(201).json({
-            status: true,
-            message: "Leisre Detils added successfully",
-            data: newBrand
-        });
-
-    } catch (error) {
-        console.log(error);
-
-        return res.status(500).json({
-            status: false,
-            message: "Something Went Wrong",
-            error: error.message
-        });
+    if (typeof titles === "string") {
+      try {
+        titles = JSON.parse(titles);
+      } catch (error) {
+        titles = [titles];
+      }
     }
+
+    if (!Array.isArray(titles)) {
+      titles = [titles];
+    }
+
+    // Get all uploaded images
+    const images = req.files?.option_image || [];
+
+    if (!titles || titles.length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: "Please provide at least one option title",
+      });
+    }
+
+    if (images.length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: "Please upload at least one option image",
+      });
+    }
+
+    if (titles.length !== images.length) {
+      return res.status(400).json({
+        status: false,
+        message:
+          "Number of option titles and option images must be the same",
+      });
+    }
+
+    // Create parent
+    const newLeisure = await leisureexperiences.create({});
+
+    // Create options
+    const optionsData = titles.map((title, index) => ({
+      leisure_id: newLeisure.id,
+      option_title: title.trim(),
+      option_image: images[index].filename,
+    }));
+
+    await leisureoptions.bulkCreate(optionsData);
+
+    // Get complete data
+    const completeData = await leisureexperiences.findByPk(
+      newLeisure.id,
+      {
+        include: [
+          {
+            model: leisureoptions,
+            as: "options",
+          },
+        ],
+      }
+    );
+
+    return res.status(201).json({
+      status: true,
+      message: "Leisure Details Added Successfully",
+      data: completeData,
+    });
+
+  } catch (error) {
+    console.error("Addleisure Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
 };
+
+
+// ==========================================
+// GET ALL LEISURE
+// ==========================================
 const FindAllLeisureData = async (req, res) => {
   try {
-    const allData = await leisureexperiences.findAll();
+    const allData = await leisureexperiences.findAll({
+      include: [
+        {
+          model: leisureoptions,
+          as: "options",
+        },
+      ],
+    });
+
     return res.status(200).json({
       status: true,
       message: "All Leisure Details Fetched Successfully",
       data: allData,
     });
+
   } catch (error) {
-    return res.status(400).json({
+    console.error("FindAllLeisureData Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
     });
   }
 };
+
+
+// ==========================================
+// UPDATE LEISURE
+// ==========================================
 const UpdateLeisure = async (req, res) => {
   try {
-    // console.log("BODY:", req.body);
-    // console.log("FILES:", req.files);
-
     const { leisure_id } = req.params;
+    const { option_title } = req.body;
 
-    const {
-      option_title_one,
-      option_title_two,
-      option_title_three,
-      option_title_four,
-    } = req.body;
-
-    const leisureData = await leisureexperiences.findByPk(leisure_id);
+    const leisureData = await leisureexperiences.findByPk(
+      leisure_id
+    );
 
     if (!leisureData) {
       return res.status(404).json({
@@ -110,66 +151,91 @@ const UpdateLeisure = async (req, res) => {
       });
     }
 
-    const option_image_one =
-      req.files?.option_image_one?.[0]?.filename;
+    // Parse titles
+    let titles = option_title;
 
-    const option_image_two =
-      req.files?.option_image_two?.[0]?.filename;
-
-    const option_image_three =
-      req.files?.option_image_three?.[0]?.filename;
-
-    const option_image_four =
-      req.files?.option_image_four?.[0]?.filename;
-
-    // if (bold_title) {
-    //   leisureData.bold_title = bold_title;
-    // }
-
-    if (option_title_one) {
-      leisureData.option_title_one = option_title_one;
+    if (typeof titles === "string") {
+      try {
+        titles = JSON.parse(titles);
+      } catch (error) {
+        titles = [titles];
+      }
     }
 
-    if (option_title_two) {
-      leisureData.option_title_two = option_title_two;
+    if (titles !== undefined && !Array.isArray(titles)) {
+      titles = [titles];
     }
 
-    if (option_title_three) {
-      leisureData.option_title_three = option_title_three;
+    const images = req.files?.option_image || [];
+
+    /*
+      If option_title or option_image is sent,
+      replace all existing options.
+    */
+    if (titles !== undefined || images.length > 0) {
+
+      if (!titles || titles.length === 0) {
+        return res.status(400).json({
+          status: false,
+          message: "Please provide option titles",
+        });
+      }
+
+      if (images.length === 0) {
+        return res.status(400).json({
+          status: false,
+          message: "Please upload option images",
+        });
+      }
+
+      if (titles.length !== images.length) {
+        return res.status(400).json({
+          status: false,
+          message:
+            "Number of option titles and option images must be the same",
+        });
+      }
+
+      // Delete old options
+      await leisureoptions.destroy({
+        where: {
+          leisure_id: leisure_id,
+        },
+      });
+
+      // Create new options
+      const optionsData = titles.map((title, index) => ({
+        leisure_id: leisure_id,
+        option_title: title.trim(),
+        option_image: images[index].filename,
+      }));
+
+      await leisureoptions.bulkCreate(optionsData);
     }
 
-    if (option_title_four) {
-      leisureData.option_title_four = option_title_four;
-    }
-
-    if (option_image_one) {
-      leisureData.option_image_one = option_image_one;
-    }
-
-    if (option_image_two) {
-      leisureData.option_image_two = option_image_two;
-    }
-
-    if (option_image_three) {
-      leisureData.option_image_three = option_image_three;
-    }
-
-    if (option_image_four) {
-      leisureData.option_image_four = option_image_four;
-    }
-
-    await leisureData.save();
+    // Get updated data
+    const updatedData = await leisureexperiences.findByPk(
+      leisure_id,
+      {
+        include: [
+          {
+            model: leisureoptions,
+            as: "options",
+          },
+        ],
+      }
+    );
 
     return res.status(200).json({
       status: true,
       message: "Leisure Details Updated Successfully",
-      data: leisureData,
+      data: updatedData,
     });
 
   } catch (error) {
-    console.log(error);
+    console.error("UpdateLeisure Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -178,11 +244,16 @@ const UpdateLeisure = async (req, res) => {
 };
 
 
+// ==========================================
+// DELETE LEISURE
+// ==========================================
 const DeleteLeisure = async (req, res) => {
   try {
     const { leisure_id } = req.params;
 
-    const leisureData = await leisureexperiences.findByPk(leisure_id);
+    const leisureData = await leisureexperiences.findByPk(
+      leisure_id
+    );
 
     if (!leisureData) {
       return res.status(404).json({
@@ -191,6 +262,14 @@ const DeleteLeisure = async (req, res) => {
       });
     }
 
+    // Delete options
+    await leisureoptions.destroy({
+      where: {
+        leisure_id: leisure_id,
+      },
+    });
+
+    // Delete parent
     await leisureData.destroy();
 
     return res.status(200).json({
@@ -199,9 +278,9 @@ const DeleteLeisure = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
+    console.error("DeleteLeisure Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -214,9 +293,5 @@ module.exports = {
   Addleisure,
   FindAllLeisureData,
   UpdateLeisure,
-  DeleteLeisure
+  DeleteLeisure,
 };
-
-
-
-

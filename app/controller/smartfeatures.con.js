@@ -1,189 +1,199 @@
 const smartfeatures = require("../model/smart-features");
+const smartfeaturesoption = require("../model/smartfeatureoption");
 
 const Addsmartfeatures = async (req, res) => {
   try {
+    const { options } = req.body;
 
-    console.log("============================")
-
-    console.log("Data:",req.body)
-    console.log("============================")
-    const {
-      bulletpoint_one,
-      description_one,
-      bulletpoint_two,
-      description_two,
-      bulletpoint_three,
-      description_three,
-      bulletpoint_four,
-      description_four,
-    } = req.body;
-    if (
-      !bulletpoint_one ||
-      !bulletpoint_two ||
-      !bulletpoint_three ||
-      !bulletpoint_four 
-     
-    ) {
+    if (!options) {
       return res.status(400).json({
         status: false,
-        message: "Provide All BulletPoints",
+        message: "Options are required",
       });
     }
-    if (
-      !description_one ||
-      !description_two ||
-      !description_three ||
-      !description_four 
-      
-    ) {
+
+    let parsedOptions;
+
+    if (typeof options === "string") {
+      try {
+        parsedOptions = JSON.parse(options);
+      } catch (error) {
+        return res.status(400).json({
+          status: false,
+          message: "Options must be a valid JSON array",
+        });
+      }
+    } else {
+      parsedOptions = options;
+    }
+
+    if (!Array.isArray(parsedOptions) || parsedOptions.length === 0) {
       return res.status(400).json({
         status: false,
-        message: "Provide All Descriptions",
+        message: "At least one option is required",
       });
     }
-    const uppercasebulletpoint_one = bulletpoint_one.trim(" ").toUpperCase();
-    const uppercasedescription_two = bulletpoint_two.trim(" ").toUpperCase();
-    const uppercasedescription_three = bulletpoint_three
-      .trim(" ")
-      .toUpperCase();
-    const uppercasedescription_four = bulletpoint_four.trim(" ").toUpperCase();
-    
+    const validOptions = parsedOptions.filter(
+      (item) => item && item.bulletpoint?.trim() && item.description?.trim(),
+    );
 
-    const createData = await smartfeatures.create({
-      bulletpoint_one: uppercasebulletpoint_one,
-      bulletpoint_two: uppercasedescription_two,
-      bulletpoint_three: uppercasedescription_three,
-      bulletpoint_four: uppercasedescription_four,
-      description_one,
-      description_two,
-      description_three,
-      description_four,
-      
-     
+    if (validOptions.length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: "Provide valid bulletpoints and descriptions",
+      });
+    }
+
+    const newSmartFeature = await smartfeatures.create({});
+
+    const optionsData = validOptions.map((item) => ({
+      smartfeature_id: newSmartFeature.id,
+      bulletpoint: item.bulletpoint.trim().toUpperCase(),
+      description: item.description.trim(),
+    }));
+
+    await smartfeaturesoption.bulkCreate(optionsData);
+
+    const result = await smartfeatures.findByPk(newSmartFeature.id, {
+      include: [
+        {
+          model: smartfeaturesoption,
+          as: "smartfeatureoptions",
+        },
+      ],
     });
 
     return res.status(201).json({
       status: true,
-      message: "smartfeatures Added Successfully",
-      data: createData,
+      message: "Smart Features Added Successfully",
+      data: result,
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("Addsmartfeatures Error:", error);
+
+    return res.status(500).json({
       status: false,
-      message: "Something Went wrong",
-      error:error.message,
+      message: "Something Went Wrong",
+      error: error.message,
     });
   }
 };
 
 const Allsmartfeatures = async (req, res) => {
   try {
-    const findData = await smartfeatures.findAll();
+    const findData = await smartfeatures.findAll({
+      include: [
+        {
+          model: smartfeaturesoption,
+          as: "smartfeatureoptions",
+        },
+      ],
+    });
 
     return res.status(200).json({
       status: true,
-      message: "All smartfeatures Fetched Successfully",
+      message: "All Smart Features Fetched Successfully",
       data: findData,
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("Allsmartfeatures Error:", error);
+
+    return res.status(500).json({
       status: false,
-      message: "Something Went wrong",
-      error:error.message,
+      message: "Something Went Wrong",
+      error: error.message,
     });
   }
 };
+
 const Updatesmartfeatures = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const {
-      bulletpoint_one,
-      description_one,
-      bulletpoint_two,
-      description_two,
-      bulletpoint_three,
-      description_three,
-      bulletpoint_four,
-      description_four,
-    } = req.body;
+    const { options } = req.body;
 
     const findData = await smartfeatures.findByPk(id);
 
     if (!findData) {
       return res.status(404).json({
         status: false,
-        message: "smartfeatures Not Found",
+        message: "Smart Features Not Found",
       });
     }
 
-    if (
-      !bulletpoint_one &&
-      !description_one &&
-      !bulletpoint_two &&
-      !description_two &&
-      !bulletpoint_three &&
-      !description_three &&
-      !bulletpoint_four &&
-      !description_four
-    ) {
+    if (options === undefined) {
       return res.status(400).json({
         status: false,
-        message: "Provide Data To Update",
+        message: "Options are required",
       });
     }
 
-    const updateData = {};
+    let parsedOptions;
 
-    if (bulletpoint_one) {
-      updateData.bulletpoint_one = bulletpoint_one.trim().toUpperCase();
+    if (typeof options === "string") {
+      try {
+        parsedOptions = JSON.parse(options);
+      } catch (error) {
+        return res.status(400).json({
+          status: false,
+          message: "Options must be a valid JSON array",
+        });
+      }
+    } else {
+      parsedOptions = options;
     }
 
-    if (description_one) {
-      updateData.description_one;
+    if (!Array.isArray(parsedOptions)) {
+      return res.status(400).json({
+        status: false,
+        message: "Options must be an array",
+      });
     }
 
-    if (bulletpoint_two) {
-      updateData.bulletpoint_two = bulletpoint_two.trim().toUpperCase();
+    const validOptions = parsedOptions.filter(
+      (item) => item && item.bulletpoint?.trim() && item.description?.trim(),
+    );
+
+    if (validOptions.length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: "At least one valid option is required",
+      });
     }
 
-    if (description_two) {
-      updateData.description_two;
-    }
-
-    if (bulletpoint_three) {
-      updateData.bulletpoint_three = bulletpoint_three.trim().toUpperCase();
-    }
-
-    if (description_three) {
-      updateData.description_three;
-    }
-
-    if (bulletpoint_four) {
-      updateData.bulletpoint_four = bulletpoint_four.trim().toUpperCase();
-    }
-
-    if (description_four) {
-      updateData.description_four;
-    }
-
-    await smartfeatures.update(updateData, {
+    await smartfeaturesoption.destroy({
       where: {
-        id: id,
+        smartfeature_id: id,
       },
     });
 
-    const updatedData = await smartfeatures.findByPk(id);
+    const optionsData = validOptions.map((item) => ({
+      smartfeature_id: id,
+      bulletpoint: item.bulletpoint.trim().toUpperCase(),
+      description: item.description.trim(),
+    }));
+
+    await smartfeaturesoption.bulkCreate(optionsData);
+
+    const updatedData = await smartfeatures.findByPk(id, {
+      include: [
+        {
+          model: smartfeaturesoption,
+          as: "smartfeatureoptions",
+        },
+      ],
+    });
 
     return res.status(200).json({
       status: true,
-      message: "smartfeatures Updated Successfully",
+      message: "Smart Features Updated Successfully",
       data: updatedData,
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("Updatesmartfeatures Error:", error);
+
+    return res.status(500).json({
       status: false,
-      message: "Something Went wrong",
+      message: "Something Went Wrong",
       error: error.message,
     });
   }
@@ -198,9 +208,15 @@ const Deletesmartfeatures = async (req, res) => {
     if (!findData) {
       return res.status(404).json({
         status: false,
-        message: "smartfeatures Not Found",
+        message: "Smart Features Not Found",
       });
     }
+
+    await smartfeaturesoption.destroy({
+      where: {
+        smartfeature_id: id,
+      },
+    });
 
     await smartfeatures.destroy({
       where: {
@@ -210,15 +226,22 @@ const Deletesmartfeatures = async (req, res) => {
 
     return res.status(200).json({
       status: true,
-      message: "smartfeatures Deleted Successfully",
+      message: "Smart Features Deleted Successfully",
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("Deletesmartfeatures Error:", error);
+
+    return res.status(500).json({
       status: false,
-      message: "Something Went wrong",
+      message: "Something Went Wrong",
       error: error.message,
     });
   }
 };
 
-module.exports = { Addsmartfeatures, Allsmartfeatures, Updatesmartfeatures, Deletesmartfeatures };
+module.exports = {
+  Addsmartfeatures,
+  Allsmartfeatures,
+  Updatesmartfeatures,
+  Deletesmartfeatures,
+};

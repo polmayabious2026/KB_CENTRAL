@@ -15,38 +15,6 @@ const wellnessSchema = sequelize.define("wellness-spaces",{
       type:DataTypes.STRING,
       allowNull: false,
     },
-    brandlogo_one: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    brandlogo_two: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    brandlogo_three: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    brandlogo_four: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    brandlogo_five: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    brandlogo_six: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    brandlogo_seven: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    brandlogo_eight: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     created_at: {
       type: DataTypes.DATE,
     },

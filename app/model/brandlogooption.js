@@ -1,17 +1,20 @@
 const sequelize = require("../config/dB");
 const { DataTypes } = require("sequelize");
 
-const brandSchema = sequelize.define(
-  "brand",
-  {
-    id: {
+const brandLogoSchema = sequelize.define(
+  "brandlogooption",
+  { id: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    brnad_id: {
+      type: DataTypes.INTEGER,
+      allowNull:false,
+    },
+    option_logo:{
+        type:DataTypes.STRING,
+        allowNull:false,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -21,11 +24,11 @@ const brandSchema = sequelize.define(
     },
   },
   {
-    tableName: "brand",
+    tableName: "brandlogooption",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   },
 );
 
-module.exports = brandSchema;
+module.exports = brandLogoSchema;

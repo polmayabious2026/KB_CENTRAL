@@ -1,62 +1,76 @@
 const wellnessspaces = require("../model/wellness-spaces");
+const wellnesslogos = require("../model/wellspacesoption");
 
 const AddWellnessSpaces = async (req, res) => {
   try {
-    // console.log("BODY:", req.body);
-    // console.log("FILES:", req.files);
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
 
     const { title } = req.body;
+
+    if (!title || !title.trim()) {
+      return res.status(400).json({
+        status: false,
+        message: "Title is required",
+      });
+    }
 
     const wellness_background_photo =
       req.files?.wellness_background_photo?.[0]?.filename;
 
-    const brandlogo_one = req.files?.brandlogo_one?.[0]?.filename;
-    const brandlogo_two = req.files?.brandlogo_two?.[0]?.filename;
-    const brandlogo_three = req.files?.brandlogo_three?.[0]?.filename;
-    const brandlogo_four = req.files?.brandlogo_four?.[0]?.filename;
-    const brandlogo_five = req.files?.brandlogo_five?.[0]?.filename;
-    const brandlogo_six = req.files?.brandlogo_six?.[0]?.filename;
-    const brandlogo_seven = req.files?.brandlogo_seven?.[0]?.filename;
-    const brandlogo_eight = req.files?.brandlogo_eight?.[0]?.filename;
-
-    if (
-      !brandlogo_one ||
-      !brandlogo_two ||
-      !brandlogo_three ||
-      !brandlogo_four ||
-      !brandlogo_five ||
-      !brandlogo_six ||
-      !brandlogo_seven ||
-      !brandlogo_eight ||
-      !wellness_background_photo
-    ) {
+    if (!wellness_background_photo) {
       return res.status(400).json({
         status: false,
-        message:
-          "Please upload all 8 brand logos and Wellness Background Image",
+        message: "Wellness Background Image is required",
       });
     }
 
-    const newBrand = await wellnessspaces.create({
-      title,
+    const logos = [
+      req.files?.brandlogo_one?.[0]?.filename,
+      req.files?.brandlogo_two?.[0]?.filename,
+      req.files?.brandlogo_three?.[0]?.filename,
+      req.files?.brandlogo_four?.[0]?.filename,
+      req.files?.brandlogo_five?.[0]?.filename,
+      req.files?.brandlogo_six?.[0]?.filename,
+      req.files?.brandlogo_seven?.[0]?.filename,
+      req.files?.brandlogo_eight?.[0]?.filename,
+    ].filter(Boolean);
+
+    if (logos.length !== 8) {
+      return res.status(400).json({
+        status: false,
+        message: "Please upload all 8 brand logos",
+      });
+    }
+
+    const newWellness = await wellnessspaces.create({
+      title: title.trim(),
       wellness_background_photo,
-      brandlogo_one,
-      brandlogo_two,
-      brandlogo_three,
-      brandlogo_four,
-      brandlogo_five,
-      brandlogo_six,
-      brandlogo_seven,
-      brandlogo_eight,
+    });
+
+    const logoData = logos.map((logo) => ({
+      wellnessspaces_id: newWellness.id,
+      brandlogo: logo,
+    }));
+
+    await wellnesslogos.bulkCreate(logoData);
+
+    const completeData = await wellnessspaces.findByPk(newWellness.id, {
+      include: [
+        {
+          model: wellnesslogos,
+          as: "brandlogooption",
+        },
+      ],
     });
 
     return res.status(201).json({
       status: true,
-      message: "Brand added successfully into wellness Spaces",
-      data: newBrand,
+      message: "Wellness Spaces Added Successfully",
+      data: completeData,
     });
   } catch (error) {
-    console.log(error);
+    console.error("AddWellnessSpaces Error:", error);
 
     return res.status(500).json({
       status: false,
@@ -65,112 +79,98 @@ const AddWellnessSpaces = async (req, res) => {
     });
   }
 };
+
 const AllWellnessData = async (req, res) => {
   try {
-    const allData = await wellnessspaces.findAll();
+    const allData = await wellnessspaces.findAll({
+      include: [
+        {
+          model: wellnesslogos,
+          as: "brandlogooption",
+        },
+      ],
+    });
+
     return res.status(200).json({
       status: true,
-      message: "All DiningExperience Details Fetched Successfully",
+      message: "All Wellness Spaces Details Fetched Successfully",
       data: allData,
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("AllWellnessData Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
     });
   }
 };
+
 const UpdateWellnessSpaces = async (req, res) => {
   try {
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
+
     const { id } = req.params;
     const { title } = req.body;
 
-    const findData = await wellnessspaces.findByPk(id);
+    const wellnessData = await wellnessspaces.findByPk(id);
 
-    if (!findData) {
+    if (!wellnessData) {
       return res.status(404).json({
         status: false,
         message: "Wellness Spaces Not Found",
       });
     }
 
-    if (
-      !title &&
-      !req.files?.wellness_background_photo?.[0] &&
-      !req.files?.brandlogo_one?.[0] &&
-      !req.files?.brandlogo_two?.[0] &&
-      !req.files?.brandlogo_three?.[0] &&
-      !req.files?.brandlogo_four?.[0] &&
-      !req.files?.brandlogo_five?.[0] &&
-      !req.files?.brandlogo_six?.[0] &&
-      !req.files?.brandlogo_seven?.[0] &&
-      !req.files?.brandlogo_eight?.[0]
-    ) {
-      return res.status(400).json({
-        status: false,
-        message: "Provide Data To Update",
+    if (title && title.trim()) {
+      wellnessData.title = title.trim();
+    }
+
+    const wellness_background_photo =
+      req.files?.wellness_background_photo?.[0]?.filename;
+
+    if (wellness_background_photo) {
+      wellnessData.wellness_background_photo = wellness_background_photo;
+    }
+
+    await wellnessData.save();
+
+    const logos = [
+      req.files?.brandlogo_one?.[0]?.filename,
+      req.files?.brandlogo_two?.[0]?.filename,
+      req.files?.brandlogo_three?.[0]?.filename,
+      req.files?.brandlogo_four?.[0]?.filename,
+      req.files?.brandlogo_five?.[0]?.filename,
+      req.files?.brandlogo_six?.[0]?.filename,
+      req.files?.brandlogo_seven?.[0]?.filename,
+      req.files?.brandlogo_eight?.[0]?.filename,
+    ].filter(Boolean);
+
+    if (logos.length > 0) {
+      await wellnesslogos.destroy({
+        where: {
+          wellnessspaces_id: id,
+        },
       });
+
+      const logoData = logos.map((logo) => ({
+        wellnessspaces_id: id,
+        brandlogo: logo,
+      }));
+
+      await wellnesslogos.bulkCreate(logoData);
     }
 
-    const updateData = {};
-
-    if (title) {
-      updateData.title = title;
-    }
-
-    if (req.files?.wellness_background_photo?.[0]?.filename) {
-      updateData.wellness_background_photo =
-        req.files.wellness_background_photo[0].filename;
-    }
-
-    if (req.files?.brandlogo_one?.[0]?.filename) {
-      updateData.brandlogo_one =
-        req.files.brandlogo_one[0].filename;
-    }
-
-    if (req.files?.brandlogo_two?.[0]?.filename) {
-      updateData.brandlogo_two =
-        req.files.brandlogo_two[0].filename;
-    }
-
-    if (req.files?.brandlogo_three?.[0]?.filename) {
-      updateData.brandlogo_three =
-        req.files.brandlogo_three[0].filename;
-    }
-
-    if (req.files?.brandlogo_four?.[0]?.filename) {
-      updateData.brandlogo_four =
-        req.files.brandlogo_four[0].filename;
-    }
-
-    if (req.files?.brandlogo_five?.[0]?.filename) {
-      updateData.brandlogo_five =
-        req.files.brandlogo_five[0].filename;
-    }
-
-    if (req.files?.brandlogo_six?.[0]?.filename) {
-      updateData.brandlogo_six =
-        req.files.brandlogo_six[0].filename;
-    }
-
-    if (req.files?.brandlogo_seven?.[0]?.filename) {
-      updateData.brandlogo_seven =
-        req.files.brandlogo_seven[0].filename;
-    }
-
-    if (req.files?.brandlogo_eight?.[0]?.filename) {
-      updateData.brandlogo_eight =
-        req.files.brandlogo_eight[0].filename;
-    }
-
-    await wellnessspaces.update(updateData, {
-      where: {
-        id: id,
-      },
+    const updatedData = await wellnessspaces.findByPk(id, {
+      include: [
+        {
+          model: wellnesslogos,
+          as: "brandlogooption",
+        },
+      ],
     });
-
-    const updatedData = await wellnessspaces.findByPk(id);
 
     return res.status(200).json({
       status: true,
@@ -178,7 +178,9 @@ const UpdateWellnessSpaces = async (req, res) => {
       data: updatedData,
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("UpdateWellnessSpaces Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -190,27 +192,31 @@ const DeleteWellnessSpaces = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const findData = await wellnessspaces.findByPk(id);
+    const wellnessData = await wellnessspaces.findByPk(id);
 
-    if (!findData) {
+    if (!wellnessData) {
       return res.status(404).json({
         status: false,
         message: "Wellness Spaces Not Found",
       });
     }
 
-    await wellnessspaces.destroy({
+    await wellnesslogos.destroy({
       where: {
-        id: id,
+        wellnessspaces_id: id,
       },
     });
+
+    await wellnessData.destroy();
 
     return res.status(200).json({
       status: true,
       message: "Wellness Spaces Deleted Successfully",
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("DeleteWellnessSpaces Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -224,4 +230,3 @@ module.exports = {
   UpdateWellnessSpaces,
   DeleteWellnessSpaces,
 };
-

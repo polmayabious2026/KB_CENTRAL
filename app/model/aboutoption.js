@@ -1,17 +1,21 @@
-const sequelize = require("../config/dB");
 const { DataTypes } = require("sequelize");
+const sequelize = require("../config/dB");
 
-const brandSchema = sequelize.define(
-  "brand",
+const aboutoptionSchema = sequelize.define(
+  "aboutoption",
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    title: {
+    about_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    description: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -21,11 +25,11 @@ const brandSchema = sequelize.define(
     },
   },
   {
-    tableName: "brand",
+    tableName: "about",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   },
 );
 
-module.exports = brandSchema;
+module.exports = aboutoptionSchema;

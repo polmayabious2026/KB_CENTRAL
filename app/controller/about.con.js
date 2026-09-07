@@ -1,54 +1,61 @@
 const about = require("../model/about");
-const { Op } = require("sequelize");
+const aboutoption = require("../model/aboutoption");
+
 
 const AddAboutDetails = async (req, res) => {
   try {
-    const { description_1, description_2, description_3 } = req.body;
+    let { description } = req.body;
+    if (typeof description === "string") {
+      try {
+        description = JSON.parse(description);
+      } catch (error) {
+        description = [description];
+      }
+    }
 
-    if (!description_1 || !description_2 || !description_3) {
+    if (!Array.isArray(description)) {
+      description = [description];
+    }
+
+ 
+    const descriptions = description
+      .filter((item) => item && item.trim())
+      .map((item) => item.trim());
+
+    if (descriptions.length === 0) {
       return res.status(400).json({
         status: false,
-        message: "All descriptions are required",
-      });
-    }
-    const existingDescription = await about.findOne({
-      where: {
-        [Op.or]: [
-          { description_1: description_1 },
-          { description_2: description_1 },
-          { description_3: description_1 },
-
-          { description_1: description_2 },
-          { description_2: description_2 },
-          { description_3: description_2 },
-
-          { description_1: description_3 },
-          { description_2: description_3 },
-          { description_3: description_3 },
-        ],
-      },
-    });
-
-    if (existingDescription) {
-      return res.status(409).json({
-        status: false,
-        message: "One or more descriptions already exist in the database",
+        message: "At least one description is required",
       });
     }
 
-    const newAboutdetails = await about.create({
-      description_1,
-      description_2,
-      description_3,
+    const newAbout = await about.create({});
+    const descriptionData = descriptions.map((item) => ({
+      about_id: newAbout.id,
+      description: item,
+    }));
+
+    await aboutoption.bulkCreate(descriptionData);
+
+    const completeData = await about.findByPk(newAbout.id, {
+      include: [
+        {
+          model: aboutoption,
+          as: "descriptions",
+        },
+      ],
     });
 
     return res.status(201).json({
       status: true,
       message: "About Page Details Added Successfully",
-      data: newAboutdetails,
+      data: completeData,
     });
+
   } catch (error) {
-    return res.status(400).json({
+    console.error("AddAboutDetails Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -56,26 +63,40 @@ const AddAboutDetails = async (req, res) => {
   }
 };
 
+
 const FindAllAbout = async (req, res) => {
   try {
-    const allAboutDetails = await about.findAll();
+    const allAboutDetails = await about.findAll({
+      include: [
+        {
+          model: aboutoption,
+          as: "descriptions",
+        },
+      ],
+    });
+
     return res.status(200).json({
       status: true,
       message: "All About Details Fetched Successfully",
       data: allAboutDetails,
     });
+
   } catch (error) {
-    return res.status(400).json({
+    console.error("FindAllAbout Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
     });
   }
 };
+
+
 const UpdateAboutDetails = async (req, res) => {
   try {
     const { id } = req.params;
-    const { description_1, description_2, description_3 } = req.body;
+    let { description } = req.body;
 
     const aboutDetails = await about.findByPk(id);
 
@@ -86,85 +107,73 @@ const UpdateAboutDetails = async (req, res) => {
       });
     }
 
-    if (!description_1 && !description_2 && !description_3) {
+  
+    if (typeof description === "string") {
+      try {
+        description = JSON.parse(description);
+      } catch (error) {
+        description = [description];
+      }
+    }
+
+    if (!Array.isArray(description)) {
+      description = [description];
+    }
+
+    const descriptions = description
+      .filter((item) => item && item.trim())
+      .map((item) => item.trim());
+
+    if (descriptions.length === 0) {
       return res.status(400).json({
         status: false,
         message: "At least one description is required",
       });
     }
 
-    // Check duplicate descriptions in other records
-    const duplicateDescription = await about.findOne({
+
+    await aboutoption.destroy({
       where: {
-        id: {
-          [Op.ne]: id, // Exclude current record
-        },
-        [Op.or]: [
-          // description_1
-          ...(description_1
-            ? [
-                { description_1: description_1 },
-                { description_2: description_1 },
-                { description_3: description_1 },
-              ]
-            : []),
-
-          // description_2
-          ...(description_2
-            ? [
-                { description_1: description_2 },
-                { description_2: description_2 },
-                { description_3: description_2 },
-              ]
-            : []),
-
-          // description_3
-          ...(description_3
-            ? [
-                { description_1: description_3 },
-                { description_2: description_3 },
-                { description_3: description_3 },
-              ]
-            : []),
-        ],
+        about_id: id,
       },
     });
 
-    if (duplicateDescription) {
-      return res.status(409).json({
-        status: false,
-        message: "One or more descriptions already exist in the database",
-      });
-    }
+  
+    const descriptionData = descriptions.map((item) => ({
+      about_id: id,
+      description: item,
+    }));
 
-    // Update only the fields that were provided
-    if (description_1) {
-      aboutDetails.description_1 = description_1;
-    }
+    await aboutoption.bulkCreate(descriptionData);
 
-    if (description_2) {
-      aboutDetails.description_2 = description_2;
-    }
-
-    if (description_3) {
-      aboutDetails.description_3 = description_3;
-    }
-
-    await aboutDetails.save();
+    const updatedData = await about.findByPk(id, {
+      include: [
+        {
+          model: aboutoption,
+          as: "descriptions",
+        },
+      ],
+    });
 
     return res.status(200).json({
       status: true,
       message: "About Page Details Updated Successfully",
-      data: aboutDetails,
+      data: updatedData,
     });
+
   } catch (error) {
-    return res.status(400).json({
+    console.error("UpdateAboutDetails Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
     });
   }
 };
+
+
+
 const DeleteAboutDetails = async (req, res) => {
   try {
     const { id } = req.params;
@@ -178,14 +187,25 @@ const DeleteAboutDetails = async (req, res) => {
       });
     }
 
+   
+    await aboutoption.destroy({
+      where: {
+        about_id: id,
+      },
+    });
+
+    
     await aboutDetails.destroy();
 
     return res.status(200).json({
       status: true,
       message: "About Page Details Deleted Successfully",
     });
+
   } catch (error) {
-    return res.status(400).json({
+    console.error("DeleteAboutDetails Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -193,10 +213,10 @@ const DeleteAboutDetails = async (req, res) => {
   }
 };
 
+
 module.exports = {
   AddAboutDetails,
   FindAllAbout,
   UpdateAboutDetails,
   DeleteAboutDetails,
 };
-

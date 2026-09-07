@@ -1,16 +1,12 @@
 const accessorylabels = require("../model/accessory-labels");
+const accessorylabeloption = require("../model/accessorylablesoption");
 
 const Addaccessorylabels = async (req, res) => {
   try {
-    const {
-      bold_title,
-      description_start,
-      option_one,
-      option_two,
-      option_three,
-      option_four,
-      description_end,
-    } = req.body;
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+
+    const { bold_title, description_start, description_end, option } = req.body;
 
     if (!req.file) {
       return res.status(400).json({
@@ -18,135 +14,205 @@ const Addaccessorylabels = async (req, res) => {
         message: "Image is required",
       });
     }
+
     if (!bold_title || !description_start || !description_end) {
       return res.status(400).json({
         status: false,
-        message: "Bold_title or Description is required",
+        message:
+          "Bold title, Description start and Description end are required",
       });
     }
 
-    const allOptions = [option_one, option_two, option_three, option_four];
+    let options = option;
 
-    if (allOptions.some((item) => !item?.trim())) {
+    if (typeof options === "string") {
+      try {
+        options = JSON.parse(options);
+      } catch (error) {
+        options = [options];
+      }
+    }
+
+    if (!Array.isArray(options)) {
+      options = [options];
+    }
+
+    const filteredOptions = options
+      .filter((item) => item && item.trim())
+      .map((item) => item.trim());
+
+    if (filteredOptions.length === 0) {
       return res.status(400).json({
         status: false,
-        message: "Provide all Option points",
+        message: "At least one option is required",
       });
     }
-
-    const upperChaseTitle = bold_title.trim().toUpperCase();
 
     const newData = await accessorylabels.create({
       image: req.file.filename,
-      bold_title: upperChaseTitle,
-      description_start,
-      option_one,
-      option_two,
-      option_three,
-      option_four,
-      description_end,
+      bold_title: bold_title.trim().toUpperCase(),
+      description_start: description_start.trim(),
+      description_end: description_end.trim(),
     });
+
+    const optionsData = filteredOptions.map((item) => ({
+      accessorylabel_id: newData.id,
+      option: item,
+    }));
+
+    await accessorylabeloption.bulkCreate(optionsData);
+
+    const completeData = await accessorylabels.findByPk(newData.id, {
+      include: [
+        {
+          model: accessorylabeloption,
+          as: "options",
+        },
+      ],
+    });
+
     return res.status(201).json({
       status: true,
-      message: "accessorylabels Added Successfully",
-      data: newData,
+      message: "Accessory Labels Added Successfully",
+      data: completeData,
     });
   } catch (error) {
-    return res.status(400).json({
-      status: false,
-      message: "Something Went Wrong ",
-      error: error.message,
-    });
-  }
-};
-const AllaccessorylabelsData = async (req, res) => {
-  try {
-    const allData = await accessorylabels.findAll();
-    return res.status(200).json({
-      status: true,
-      message: "All Accessory labels Successfully",
-      data: allData,
-    });
-  } catch (error) {
-    return res.status(400).json({
+    console.error("Addaccessorylabels Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
     });
   }
 };
+
+const AllaccessorylabelsData = async (req, res) => {
+  try {
+    const allData = await accessorylabels.findAll({
+      include: [
+        {
+          model: accessorylabeloption,
+          as: "options",
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "All Accessory Labels Fetched Successfully",
+      data: allData,
+    });
+  } catch (error) {
+    console.error("AllaccessorylabelsData Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
+
 const Updateaccessorylabels = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const {
-      bold_title,
-      description_start,
-      option_one,
-      option_two,
-      option_three,
-      option_four,
-      description_end,
-    } = req.body;
+    const { bold_title, description_start, description_end, option } = req.body;
 
     const findData = await accessorylabels.findByPk(id);
 
     if (!findData) {
       return res.status(404).json({
         status: false,
-        message: "accessorylabels Not Found",
+        message: "Accessory Labels Not Found",
       });
     }
 
     const updateData = {};
 
-    if (bold_title) {
+    if (bold_title !== undefined) {
       updateData.bold_title = bold_title.trim().toUpperCase();
     }
 
-    if (description_start) {
-      updateData.description_start = description_start;
+    if (description_start !== undefined) {
+      updateData.description_start = description_start.trim();
     }
 
-    if (option_one) {
-      updateData.option_one = option_one;
-    }
-
-    if (option_two) {
-      updateData.option_two = option_two;
-    }
-
-    if (option_three) {
-      updateData.option_three = option_three;
-    }
-
-    if (option_four) {
-      updateData.option_four = option_four;
-    }
-
-    if (description_end) {
-      updateData.description_end = description_end;
+    if (description_end !== undefined) {
+      updateData.description_end = description_end.trim();
     }
 
     if (req.file) {
       updateData.image = req.file.filename;
     }
 
-    await accessorylabels.update(updateData, {
-      where: {
-        id: id,
-      },
-    });
+    if (Object.keys(updateData).length > 0) {
+      await accessorylabels.update(updateData, {
+        where: {
+          id: id,
+        },
+      });
+    }
 
-    const updatedData = await accessorylabels.findByPk(id);
+    if (option !== undefined) {
+      let options = option;
+
+      if (typeof options === "string") {
+        try {
+          options = JSON.parse(options);
+        } catch (error) {
+          options = [options];
+        }
+      }
+
+      if (!Array.isArray(options)) {
+        options = [options];
+      }
+
+      const filteredOptions = options
+        .filter((item) => item && item.trim())
+        .map((item) => item.trim());
+
+      if (filteredOptions.length === 0) {
+        return res.status(400).json({
+          status: false,
+          message: "At least one option is required",
+        });
+      }
+
+      await accessorylabeloption.destroy({
+        where: {
+          accessorylabel_id: id,
+        },
+      });
+
+      const optionsData = filteredOptions.map((item) => ({
+        accessorylabel_id: id,
+        option: item,
+      }));
+
+      await accessorylabeloption.bulkCreate(optionsData);
+    }
+
+    const updatedData = await accessorylabels.findByPk(id, {
+      include: [
+        {
+          model: accessorylabeloption,
+          as: "options",
+        },
+      ],
+    });
 
     return res.status(200).json({
       status: true,
-      message: "accessorylabels Updated Successfully",
+      message: "Accessory Labels Updated Successfully",
       data: updatedData,
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("Updateaccessorylabels Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -163,22 +229,26 @@ const Deleteaccessorylabels = async (req, res) => {
     if (!findData) {
       return res.status(404).json({
         status: false,
-        message: "accessorylabels Not Found",
+        message: "Accessory Labels Not Found",
       });
     }
 
-    await accessorylabels.destroy({
+    await accessorylabeloption.destroy({
       where: {
-        id: id,
+        accessorylabel_id: id,
       },
     });
 
+    await findData.destroy();
+
     return res.status(200).json({
       status: true,
-      message: "accessorylabels Deleted Successfully",
+      message: "Accessory Labels Deleted Successfully",
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("Deleteaccessorylabels Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -192,5 +262,3 @@ module.exports = {
   Updateaccessorylabels,
   Deleteaccessorylabels,
 };
-
-

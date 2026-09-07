@@ -1,18 +1,18 @@
 const {DataTypes}= require("sequelize")
 const sequelize = require("../config/dB")
 
-const diningSchema = sequelize.define("dining-experiences",{
+const diningLogoSchema = sequelize.define("dininglogos",{
     id:{
         type:DataTypes.INTEGER,
         autoIncrement:true,
         primaryKey:true,
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    dining_id:{
+        type:DataTypes.INTEGER,
+        allowNull:false
     },
-    dining_photo:{
-      type:DataTypes.STRING,
+    brandlogo: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     created_at: {
@@ -22,10 +22,10 @@ const diningSchema = sequelize.define("dining-experiences",{
       type: DataTypes.DATE,
     },
 },{
-    tableName:"dining-experiences",
+    tableName:"dininglogos",
     timestamps:true,
     createdAt:"created_at",
     updatedAt:"updated_at"
 })
 
-module.exports = diningSchema
+module.exports = diningLogoSchema

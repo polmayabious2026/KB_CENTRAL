@@ -21,22 +21,6 @@ const accessorylabelsSchema = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    option_one: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    option_two: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    option_three: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    option_four: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     description_end: {
       type: DataTypes.STRING,
       allowNull: false,
