@@ -22,10 +22,11 @@ const leisureexperiences= require("../model/leisure-experiences")
 const leisureoptions= require("../model/leisureoptions")
 const Landmark = require("../model/landmark")
 const LandmarkPoint = require("../model/landmark_points")
-const overview = require("../model/overview")
-const locationadvantages = require("../model/location_advantages")
-const connectivity = require("../model/connectivity")
-const projecthighlight = require("../model/project-highlight")
+
+const project_vision = require("../model/project_vission")
+const key_highlights_option = require("../model/key_highlights_points")
+
+
 const retailbrands = require("../model/retail&brands")
 const globalfashion = require("./globalfashion")
 const globalfashionoption = require("./globalfashionoption")
@@ -33,15 +34,14 @@ const accessorylabel = require("./accessory-labels")
 const accessorylabeloption = require("./accessorylablesoption")
 const finedining = require("./fine-dining")
 const finediningoption = require("./finediningoption")
-const wellness = require("./wellness")
-const events = require("./events")
 const experiences = require("./experience")
+
 const amenities = require("./amenities")
-const powerbackup = require("./power-backup")
 const accessibility = require("./accessibility")
 const accessibilityPoints = require("./accessibilitypoints")
 const smartfeatures = require("./smart-features")
 const smartfeaturesoption = require("./smartfeatureoption")
+
 const aboutavoragroup = require("./aboutavora-group")
 const ourlegacy = require("./our-legacy")
 const visionphilosophy = require("./vision&philosophy")
@@ -61,6 +61,16 @@ Landmark.hasMany(LandmarkPoint, {
 LandmarkPoint.belongsTo(Landmark, {
   foreignKey: "landmark_id",
   as: "map",
+});
+// key_highlight(project_vision)
+project_vision.hasMany(key_highlights_option, {
+  foreignKey: "projectvision_id",
+  as: "key_highlights",
+});
+
+key_highlights_option.belongsTo(project_vision, {
+  foreignKey: "projectvision_id",
+  as: "projectvision",
 });
 // accessibility
 accessibility.hasMany(accessibilityPoints, {

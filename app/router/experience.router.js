@@ -1,18 +1,31 @@
-const exress = require("express")
-const experience = exress.Router()
-const upload = require("../middleware/upload")
+const express = require("express");
+const experience = express.Router();
+const upload = require("../middleware/upload");
 
 const {
   Addexperience,
   Allexperience,
+  Singleexperience,
   Updateexperience,
   Deleteexperience,
-}= require("../controller/experience.con")
+} = require("../controller/experience.con");
 
-experience.post("/add_experience",upload.single("image"),Addexperience)
-experience.get("/getall_experience",Allexperience)
-experience.put("/update_experience/:id",upload.single("image"),Updateexperience)
-experience.delete("/delete_experience/:id",Deleteexperience)
+const experienceUpload = upload.fields([
+  { name: "banner_image", maxCount: 1 },
+  { name: "first_image", maxCount: 1 },
+  { name: "second_image", maxCount: 1 },
+  { name: "third_image", maxCount: 1 },
+  { name: "last_image", maxCount: 1 },
+]);
 
+experience.post("/add_experience", experienceUpload, Addexperience);
 
-module.exports = experience
+experience.get("/getall_experience", Allexperience);
+
+experience.get("/get_experience/:id", Singleexperience);
+
+experience.put("/update_experience/:id", experienceUpload, Updateexperience);
+
+experience.delete("/delete_experience/:id", Deleteexperience);
+
+module.exports = experience;

@@ -4,8 +4,8 @@ const globalfashionoption = require("../model/globalfashionoption");
 
 const Addglobalfashion = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
+    // console.log("BODY:", req.body);
+    // console.log("FILES:", req.files);
 
     const {
       bold_title,

@@ -2,104 +2,172 @@ const amenities = require("../model/amenities");
 
 const Addamenities = async (req, res) => {
   try {
-    const { bold_title } = req.body;
-    if (!req.file) {
-            return res.status(400).json({
-                status: false,
-                message: "Image is required",
-            });
-        }
-    if (!bold_title ) {
+    const { first_title, first_description, second_title, second_description } =
+      req.body;
+
+    if (
+      !first_title ||
+      !first_description ||
+      !second_title ||
+      !second_description
+    ) {
       return res.status(400).json({
         status: false,
-        message: "Provide Title And Description",
+        message: "All title and description fields are required",
       });
     }
-    const uppercaseBoldtitle = bold_title.trim(" ").toUpperCase();
+
+    if (
+      !req.files ||
+      !req.files.banner_image ||
+      !req.files.first_image ||
+      !req.files.second_image
+    ) {
+      return res.status(400).json({
+        status: false,
+        message: "Banner image, first image and second image are required",
+      });
+    }
+
     const createData = await amenities.create({
-      bold_title: uppercaseBoldtitle,
-      image:req.file.filename,
+      banner_image: req.files.banner_image[0].filename,
+
+      first_title: first_title.trim(),
+      first_description: first_description.trim(),
+      first_image: req.files.first_image[0].filename,
+
+      second_title: second_title.trim(),
+      second_description: second_description.trim(),
+      second_image: req.files.second_image[0].filename,
     });
 
     return res.status(201).json({
       status: true,
-      message: "amenities Added Successfully",
+      message: "Amenities Added Successfully",
       data: createData,
     });
   } catch (error) {
     return res.status(400).json({
       status: false,
-      message: "Something Went wrong",
-      error:error.message,
+      message: "Something Went Wrong",
+      error: error.message,
     });
   }
 };
 
 const Allamenities = async (req, res) => {
   try {
-    const findData = await amenities.findAll();
+    const findData = await amenities.findAll({
+      order: [["id", "DESC"]],
+    });
 
     return res.status(200).json({
       status: true,
-      message: "All amenities Fetched Successfully",
+      message: "All Amenities Fetched Successfully",
       data: findData,
     });
-  }catch (error) {
+  } catch (error) {
     return res.status(400).json({
       status: false,
-      message: "Something Went wrong",
-      error:error.message,
+      message: "Something Went Wrong",
+      error: error.message,
     });
   }
 };
-const Updateamenities = async (req, res) => {
+
+const Singleamenities = async (req, res) => {
   try {
     const { id } = req.params;
-    const { bold_title } = req.body;
 
     const findData = await amenities.findByPk(id);
 
     if (!findData) {
       return res.status(404).json({
         status: false,
-        message: "amenities Not Found",
+        message: "Amenities Not Found",
       });
     }
 
-    if (!bold_title && !req.file) {
-      return res.status(400).json({
+    return res.status(200).json({
+      status: true,
+      message: "Amenities Fetched Successfully",
+      data: findData,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
+
+const Updateamenities = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { first_title, first_description, second_title, second_description } =
+      req.body;
+
+    const findData = await amenities.findByPk(id);
+
+    if (!findData) {
+      return res.status(404).json({
         status: false,
-        message: "Provide Title Or Image",
+        message: "Amenities Not Found",
       });
     }
 
     const updateData = {};
 
-    if (bold_title) {
-      updateData.bold_title = bold_title.trim().toUpperCase();
+    if (first_title !== undefined) {
+      updateData.first_title = first_title.trim();
     }
 
-    if (req.file) {
-      updateData.image = req.file.filename;
+    if (first_description !== undefined) {
+      updateData.first_description = first_description.trim();
     }
 
-    await amenities.update(updateData, {
-      where: {
-        id: id,
-      },
-    });
+    if (second_title !== undefined) {
+      updateData.second_title = second_title.trim();
+    }
 
-    const updatedData = await amenities.findByPk(id);
+    if (second_description !== undefined) {
+      updateData.second_description = second_description.trim();
+    }
+
+    if (req.files) {
+      if (req.files.banner_image && req.files.banner_image.length > 0) {
+        updateData.banner_image = req.files.banner_image[0].filename;
+      }
+
+      if (req.files.first_image && req.files.first_image.length > 0) {
+        updateData.first_image = req.files.first_image[0].filename;
+      }
+
+      if (req.files.second_image && req.files.second_image.length > 0) {
+        updateData.second_image = req.files.second_image[0].filename;
+      }
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({
+        status: false,
+        message: "Provide at least one field or image to update",
+      });
+    }
+
+    await findData.update(updateData);
 
     return res.status(200).json({
       status: true,
-      message: "amenities Updated Successfully",
-      data: updatedData,
+      message: "Amenities Updated Successfully",
+      data: findData,
     });
   } catch (error) {
     return res.status(400).json({
       status: false,
-      message: "Something Went wrong",
+      message: "Something Went Wrong",
       error: error.message,
     });
   }
@@ -114,7 +182,7 @@ const Deleteamenities = async (req, res) => {
     if (!findData) {
       return res.status(404).json({
         status: false,
-        message: "amenities Not Found",
+        message: "Amenities Not Found",
       });
     }
 
@@ -126,12 +194,12 @@ const Deleteamenities = async (req, res) => {
 
     return res.status(200).json({
       status: true,
-      message: "amenities Deleted Successfully",
+      message: "Amenities Deleted Successfully",
     });
   } catch (error) {
     return res.status(400).json({
       status: false,
-      message: "Something Went wrong",
+      message: "Something Went Wrong",
       error: error.message,
     });
   }
@@ -140,6 +208,7 @@ const Deleteamenities = async (req, res) => {
 module.exports = {
   Addamenities,
   Allamenities,
+  Singleamenities,
   Updateamenities,
   Deleteamenities,
 };

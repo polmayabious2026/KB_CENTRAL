@@ -1,10 +1,16 @@
 const about = require("../model/about");
 const aboutoption = require("../model/aboutoption");
 
-
 const AddAboutDetails = async (req, res) => {
   try {
     let { description } = req.body;
+
+    if (!req.file) {
+      res.status(400).json({
+        status: false,
+        message: "Provide Icon",
+      });
+    }
     if (typeof description === "string") {
       try {
         description = JSON.parse(description);
@@ -17,7 +23,6 @@ const AddAboutDetails = async (req, res) => {
       description = [description];
     }
 
- 
     const descriptions = description
       .filter((item) => item && item.trim())
       .map((item) => item.trim());
@@ -29,7 +34,9 @@ const AddAboutDetails = async (req, res) => {
       });
     }
 
-    const newAbout = await about.create({});
+    const newAbout = await about.create({
+      icon: req.file.filename,
+    });
     const descriptionData = descriptions.map((item) => ({
       about_id: newAbout.id,
       description: item,
@@ -51,7 +58,6 @@ const AddAboutDetails = async (req, res) => {
       message: "About Page Details Added Successfully",
       data: completeData,
     });
-
   } catch (error) {
     console.error("AddAboutDetails Error:", error);
 
@@ -62,7 +68,6 @@ const AddAboutDetails = async (req, res) => {
     });
   }
 };
-
 
 const FindAllAbout = async (req, res) => {
   try {
@@ -80,7 +85,6 @@ const FindAllAbout = async (req, res) => {
       message: "All About Details Fetched Successfully",
       data: allAboutDetails,
     });
-
   } catch (error) {
     console.error("FindAllAbout Error:", error);
 
@@ -91,7 +95,6 @@ const FindAllAbout = async (req, res) => {
     });
   }
 };
-
 
 const UpdateAboutDetails = async (req, res) => {
   try {
@@ -107,7 +110,6 @@ const UpdateAboutDetails = async (req, res) => {
       });
     }
 
-  
     if (typeof description === "string") {
       try {
         description = JSON.parse(description);
@@ -121,7 +123,7 @@ const UpdateAboutDetails = async (req, res) => {
     }
 
     const descriptions = description
-      .filter((item) => item && item.trim())
+      .filter((item) => item && typeof item === "string" && item.trim())
       .map((item) => item.trim());
 
     if (descriptions.length === 0) {
@@ -130,15 +132,16 @@ const UpdateAboutDetails = async (req, res) => {
         message: "At least one description is required",
       });
     }
-
-
+    if (req.file) {
+      aboutDetails.icon = req.file.filename;
+      await aboutDetails.save();
+    }
     await aboutoption.destroy({
       where: {
         about_id: id,
       },
     });
 
-  
     const descriptionData = descriptions.map((item) => ({
       about_id: id,
       description: item,
@@ -160,7 +163,6 @@ const UpdateAboutDetails = async (req, res) => {
       message: "About Page Details Updated Successfully",
       data: updatedData,
     });
-
   } catch (error) {
     console.error("UpdateAboutDetails Error:", error);
 
@@ -171,8 +173,6 @@ const UpdateAboutDetails = async (req, res) => {
     });
   }
 };
-
-
 
 const DeleteAboutDetails = async (req, res) => {
   try {
@@ -187,21 +187,18 @@ const DeleteAboutDetails = async (req, res) => {
       });
     }
 
-   
     await aboutoption.destroy({
       where: {
         about_id: id,
       },
     });
 
-    
     await aboutDetails.destroy();
 
     return res.status(200).json({
       status: true,
       message: "About Page Details Deleted Successfully",
     });
-
   } catch (error) {
     console.error("DeleteAboutDetails Error:", error);
 
@@ -212,7 +209,6 @@ const DeleteAboutDetails = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   AddAboutDetails,

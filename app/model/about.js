@@ -9,6 +9,10 @@ const aboutSchema = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
+    icon:{
+    type: DataTypes.DATE,
+    allowNull:false,
+    },
     created_at: {
       type: DataTypes.DATE,
     },

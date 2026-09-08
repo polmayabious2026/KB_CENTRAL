@@ -1,25 +1,23 @@
-const {DataTypes}=require("sequelize")
-const sequielize = require("../config/dB")
+const sequelize = require("../config/dB");
+const { DataTypes } = require("sequelize");
 
-const experience = sequielize.define(
-    "experience",{
-    id:{type:DataTypes.INTEGER,
-        autoIncrement:true,
-        primaryKey:true,
+const projectvisionModel = sequelize.define(
+  "project_vission",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     banner_image: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-     first_title: {
+    first_title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     first_description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    first_image: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -59,19 +57,19 @@ const experience = sequielize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    
-    created_at:{
-        type:DataTypes.DATE
+    cretated_at: {
+      type: DataTypes.DATE,
     },
-    updated_at:{
-        type:DataTypes.DATE
-    }
-},{
-    tableName:"experience",
-    timestamps:true,
-    createdAt:"created_at",
-    updatedAt:"updated_at",
-});
+    updated_at: {
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    tableName: "project_vission",
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+  },
+);
 
-
-module.exports = experience
+module.exports = projectvisionModel;
