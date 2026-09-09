@@ -1,13 +1,14 @@
+const { Op } = require("sequelize");
+
 const brands = require("../model/brands");
 const brandlogooption = require("../model/brandlogooption");
 
-
 const AddBrands = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
-
     const { title } = req.body;
+
+    // console.log("BODY:", req.body);
+    // console.log("FILES:", req.files);
 
     if (!title || !title.trim()) {
       return res.status(400).json({
@@ -16,55 +17,41 @@ const AddBrands = async (req, res) => {
       });
     }
 
-    const brandlogo_one =
-      req.files?.brandlogo_one?.[0]?.filename;
+    const brandImage = req.files?.image?.[0]?.filename;
 
-    const brandlogo_two =
-      req.files?.brandlogo_two?.[0]?.filename;
+    if (!brandImage) {
+      return res.status(400).json({
+        status: false,
+        message: "Brand image is required",
+      });
+    }
 
-    const brandlogo_three =
-      req.files?.brandlogo_three?.[0]?.filename;
+    const logoFiles = req.files?.option_logo || [];
 
-    const brandlogo_four =
-      req.files?.brandlogo_four?.[0]?.filename;
-
-    const brandlogo_five =
-      req.files?.brandlogo_five?.[0]?.filename;
-
-    const logos = [
-      brandlogo_one,
-      brandlogo_two,
-      brandlogo_three,
-      brandlogo_four,
-      brandlogo_five,
-    ].filter(Boolean);
-
-    if (logos.length === 0) {
+    if (logoFiles.length === 0) {
       return res.status(400).json({
         status: false,
         message: "Please upload at least one brand logo",
       });
     }
 
-    // Create brand
     const newBrand = await brands.create({
       title: title.trim(),
+      image: brandImage,
     });
 
-  
-    const logoData = logos.map((logo) => ({
+    const logoData = logoFiles.map((file) => ({
       brand_id: newBrand.id,
-      option_logo: logo,
+      option_logo: file.filename,
     }));
 
     await brandlogooption.bulkCreate(logoData);
 
-   
     const brandWithLogos = await brands.findByPk(newBrand.id, {
       include: [
         {
           model: brandlogooption,
-          as: "brandlogos",
+          as: "brandoption",
         },
       ],
     });
@@ -74,7 +61,6 @@ const AddBrands = async (req, res) => {
       message: "Brand Added Successfully",
       data: brandWithLogos,
     });
-
   } catch (error) {
     console.error("AddBrands Error:", error);
 
@@ -86,17 +72,16 @@ const AddBrands = async (req, res) => {
   }
 };
 
-
-
 const FindAllBrandsData = async (req, res) => {
   try {
     const allData = await brands.findAll({
       include: [
         {
           model: brandlogooption,
-          as: "brandlogos",
+          as: "brandoption",
         },
       ],
+      order: [["id", "DESC"]],
     });
 
     return res.status(200).json({
@@ -104,7 +89,6 @@ const FindAllBrandsData = async (req, res) => {
       message: "All Brands Details Fetched Successfully",
       data: allData,
     });
-
   } catch (error) {
     console.error("FindAllBrandsData Error:", error);
 
@@ -116,14 +100,11 @@ const FindAllBrandsData = async (req, res) => {
   }
 };
 
-
-
 const UpdateBrands = async (req, res) => {
   try {
     const { brand_id } = req.params;
     const { title } = req.body;
 
-    // Find brand
     const brandData = await brands.findByPk(brand_id);
 
     if (!brandData) {
@@ -133,59 +114,51 @@ const UpdateBrands = async (req, res) => {
       });
     }
 
-    if (title && title.trim()) {
-      brandData.title = title.trim();
+    const updateData = {};
+
+    if (title !== undefined) {
+      if (!title.trim()) {
+        return res.status(400).json({
+          status: false,
+          message: "Title cannot be empty",
+        });
+      }
+
+      updateData.title = title.trim();
     }
 
-    await brandData.save();
+    const brandImage = req.files?.image?.[0]?.filename;
 
-  
-    const brandlogo_one =
-      req.files?.brandlogo_one?.[0]?.filename;
+    if (brandImage) {
+      updateData.image = brandImage;
+    }
 
-    const brandlogo_two =
-      req.files?.brandlogo_two?.[0]?.filename;
+    if (Object.keys(updateData).length > 0) {
+      await brandData.update(updateData);
+    }
 
-    const brandlogo_three =
-      req.files?.brandlogo_three?.[0]?.filename;
+    const logoFiles = req.files?.logos || [];
 
-    const brandlogo_four =
-      req.files?.brandlogo_four?.[0]?.filename;
-
-    const brandlogo_five =
-      req.files?.brandlogo_five?.[0]?.filename;
-
-    const newLogos = [
-      brandlogo_one,
-      brandlogo_two,
-      brandlogo_three,
-      brandlogo_four,
-      brandlogo_five,
-    ].filter(Boolean);
-
-   
-    if (newLogos.length > 0) {
-
+    if (logoFiles.length > 0) {
       await brandlogooption.destroy({
         where: {
           brand_id: brand_id,
         },
       });
 
-      const logoData = newLogos.map((logo) => ({
+      const logoData = logoFiles.map((file) => ({
         brand_id: brand_id,
-        option_logo: logo,
+        option_logo: file.filename,
       }));
 
       await brandlogooption.bulkCreate(logoData);
     }
 
-    
     const updatedBrand = await brands.findByPk(brand_id, {
       include: [
         {
           model: brandlogooption,
-          as: "brandlogos",
+          as: "brandoption",
         },
       ],
     });
@@ -195,7 +168,6 @@ const UpdateBrands = async (req, res) => {
       message: "Brand Updated Successfully",
       data: updatedBrand,
     });
-
   } catch (error) {
     console.error("UpdateBrands Error:", error);
 
@@ -206,7 +178,6 @@ const UpdateBrands = async (req, res) => {
     });
   }
 };
-
 
 const DeleteBrands = async (req, res) => {
   try {
@@ -221,21 +192,18 @@ const DeleteBrands = async (req, res) => {
       });
     }
 
-  
     await brandlogooption.destroy({
       where: {
         brand_id: brand_id,
       },
     });
 
-  
     await brandData.destroy();
 
     return res.status(200).json({
       status: true,
       message: "Brand Deleted Successfully",
     });
-
   } catch (error) {
     console.error("DeleteBrands Error:", error);
 
@@ -246,7 +214,6 @@ const DeleteBrands = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   AddBrands,

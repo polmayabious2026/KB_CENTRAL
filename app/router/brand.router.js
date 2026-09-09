@@ -1,5 +1,6 @@
 const express = require("express");
-const brands_router = express.Router();
+const brands = express.Router();
+
 const upload = require("../middleware/upload");
 
 const {
@@ -7,32 +8,34 @@ const {
   FindAllBrandsData,
   UpdateBrands,
   DeleteBrands,
-}= require("../controller/brands.con");
+} = require("../controller/brands.con");
 
-// add /api/admin before routes
-brands_router.post(
-  "/add_brands",
+brands.post(
+  "/add_brand",
   upload.fields([
-    { name: "brandlogo_one", maxCount: 1 },
-    { name: "brandlogo_two", maxCount: 1 },
-    { name: "brandlogo_three", maxCount: 1 },
-    { name: "brandlogo_four", maxCount: 1 },
-    { name: "brandlogo_five", maxCount: 1 },
+    { name: "image", maxCount: 1 },
+    { name: "option_logo", maxCount: 20 },
   ]),
-  AddBrands,
+  AddBrands
 );
-brands_router.get("/getall_brands", FindAllBrandsData);
-brands_router.put(
-  "/update_brands/:brand_id",
+
+brands.get(
+  "/getall_brands",
+  FindAllBrandsData
+);
+
+brands.put(
+  "/update_brand/:brand_id",
   upload.fields([
-    { name: "brandlogo_one", maxCount: 1 },
-    { name: "brandlogo_two", maxCount: 1 },
-    { name: "brandlogo_three", maxCount: 1 },
-    { name: "brandlogo_four", maxCount: 1 },
-    { name: "brandlogo_five", maxCount: 1 },
+    { name: "image", maxCount: 1 },
+    { name: "option_logo", maxCount: 20 },
   ]),
   UpdateBrands
 );
-brands_router.delete("/delete_brands/:brand_id", DeleteBrands);
 
-module.exports = brands_router;
+brands.delete(
+  "/delete_brand/:brand_id",
+  DeleteBrands
+);
+
+module.exports = brands;

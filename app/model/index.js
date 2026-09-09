@@ -113,7 +113,7 @@ brandlogooption.belongsTo(brands, {
 // dining-experience
 diningexperiences.hasMany(diningLogo, {
   foreignKey: "dining_id",
-  as: "diningoption",
+  as: "dininglogos",
 });
 diningLogo.belongsTo(diningexperiences, {
   foreignKey: "dining_id",
@@ -121,11 +121,11 @@ diningLogo.belongsTo(diningexperiences, {
 });
 // wellness-spaces
 wellnessspaces.hasMany(wellnessspaceoptions, {
-  foreignKey: "  wellnessspaces_id",
+  foreignKey: "wellnessspaces_id",
   as: "brandlogooption",
 });
 wellnessspaceoptions.belongsTo(wellnessspaces, {
-  foreignKey: "  wellnessspaces_id",
+  foreignKey: "wellnessspaces_id",
   as: "wellnessspaces",
 });
 // lesire-experience

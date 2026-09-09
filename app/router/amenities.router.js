@@ -10,19 +10,21 @@ const {
   Deleteamenities,
 } = require("../controller/amenities.con");
 
-const amenitiesUpload = upload.fields([
+amenities.post("/add_amenities", upload.fields([
   { name: "banner_image", maxCount: 1 },
   { name: "first_image", maxCount: 1 },
   { name: "second_image", maxCount: 1 },
-]);
-
-amenities.post("/add_amenities", amenitiesUpload, Addamenities);
+]), Addamenities);
 
 amenities.get("/getall_amenities", Allamenities);
 
 amenities.get("/get_amenities/:id", Singleamenities);
 
-amenities.put("/update_amenities/:id", amenitiesUpload, Updateamenities);
+amenities.put("/update_amenities/:id", upload.fields([
+  { name: "banner_image", maxCount: 1 },
+  { name: "first_image", maxCount: 1 },
+  { name: "second_image", maxCount: 1 },
+]), Updateamenities);
 
 amenities.delete("/delete_amenities/:id", Deleteamenities);
 

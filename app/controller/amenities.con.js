@@ -4,7 +4,7 @@ const Addamenities = async (req, res) => {
   try {
     const { first_title, first_description, second_title, second_description } =
       req.body;
-
+    console.log(req.body)
     if (
       !first_title ||
       !first_description ||

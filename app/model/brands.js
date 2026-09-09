@@ -9,13 +9,21 @@ const brandSchema = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
+
     title: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
+
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
     created_at: {
       type: DataTypes.DATE,
     },
+
     updated_at: {
       type: DataTypes.DATE,
     },
@@ -25,7 +33,7 @@ const brandSchema = sequelize.define(
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-  },
+  }
 );
 
 module.exports = brandSchema;

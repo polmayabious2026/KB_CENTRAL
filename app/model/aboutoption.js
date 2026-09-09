@@ -9,27 +9,31 @@ const aboutoptionSchema = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
+
     about_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+
     description: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+
     created_at: {
       type: DataTypes.DATE,
     },
+
     updated_at: {
       type: DataTypes.DATE,
     },
   },
   {
-    tableName: "about",
+    tableName: "aboutoption",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-  },
+  }
 );
 
 module.exports = aboutoptionSchema;

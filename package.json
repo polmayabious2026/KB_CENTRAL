@@ -2,13 +2,22 @@
   "name": "kb_central",
   "version": "1.0.0",
   "description": "Admin Portal",
+  "homepage": "https://github.com/polmayabious2026/KB_CENTRAL#readme",
+  "bugs": {
+    "url": "https://github.com/polmayabious2026/KB_CENTRAL/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polmayabious2026/KB_CENTRAL.git"
+  },
+  "license": "ISC",
+  "author": "Pol Sarkar",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
   },
-  "author": "Pol Sarkar",
-  "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",

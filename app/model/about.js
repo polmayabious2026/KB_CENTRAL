@@ -9,13 +9,16 @@ const aboutSchema = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    icon:{
-    type: DataTypes.DATE,
-    allowNull:false,
+
+    icon: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
+
     created_at: {
       type: DataTypes.DATE,
     },
+
     updated_at: {
       type: DataTypes.DATE,
     },
@@ -25,7 +28,7 @@ const aboutSchema = sequelize.define(
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-  },
+  }
 );
 
 module.exports = aboutSchema;
