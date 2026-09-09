@@ -4,9 +4,9 @@ const upload = require("../middleware/upload")
 
 const {Addaboutavoragroup,Allaboutavoragroup,Updateaboutavoragroup,Deleteaboutavoragroup}= require("../controller/aboutavoragroup.con")
 
-aboutavoragroup.post("/add_aboutavoragroup",upload.single("image"),Addaboutavoragroup)
+aboutavoragroup.post("/add_aboutavoragroup",upload.single("banner_image"),Addaboutavoragroup)
 aboutavoragroup.get("/getall_aboutavoragroup",Allaboutavoragroup)
-aboutavoragroup.put("/update_aboutavoragroup/:id",upload.single("image"),Updateaboutavoragroup)
+aboutavoragroup.put("/update_aboutavoragroup/:id",upload.single("banner_image"),Updateaboutavoragroup)
 aboutavoragroup.delete("/delete_aboutavoragroup/:id",Deleteaboutavoragroup)
 
 

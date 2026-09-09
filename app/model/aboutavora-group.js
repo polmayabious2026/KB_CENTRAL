@@ -7,11 +7,23 @@ const aboutavoragroup = sequielize.define(
         autoIncrement:true,
         primaryKey:true,
     },
-    image:{
+    banner_image:{
         type:DataTypes.STRING,
         allowNull:false,
     },
-    bold_title:{
+    first_title:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    first_description:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    second_title:{
+        type:DataTypes.STRING,
+        allowNull:false,
+    },
+    second_description:{
         type:DataTypes.STRING,
         allowNull:false,
     },
