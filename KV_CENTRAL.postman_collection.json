@@ -788,43 +788,40 @@
                 {
                   "key": "title",
                   "value": "Global Fashion Brands",
-                  "type": "text",
-                  "uuid": "48d3102f-9c48-444d-8d38-0d134451dbf4"
+                  "type": "text"
                 },
                 {
-                  "key": "brandlogo_one",
+                  "key": "image",
                   "type": "file",
-                  "uuid": "fcc8c9eb-c8dc-4a3f-a3bc-0078d4563696",
-                  "src": "/C:/Users/Web-04/Downloads/images.jfif"
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide-img-1.webp"
+                  ]
                 },
                 {
-                  "key": "brandlogo_two",
+                  "key": "option_logo",
                   "type": "file",
-                  "uuid": "ad4fd1b4-7e55-478c-9fc3-07225074ed22",
-                  "src": "/C:/Users/Web-04/Downloads/images.jfif"
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide1/Alchemist.png"
+                  ]
                 },
                 {
-                  "key": "brandlogo_three",
+                  "key": "option_logo",
                   "type": "file",
-                  "uuid": "4b40970e-2838-4da8-a3f2-bda7a1d372b9",
-                  "src": "/C:/Users/Web-04/Downloads/images.jfif"
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide1/disfrutar.png"
+                  ]
                 },
                 {
-                  "key": "brandlogo_four",
+                  "key": "option_logo",
                   "type": "file",
-                  "uuid": "5a762fe9-f6b0-4183-b241-0326050a36e2",
-                  "src": "/C:/Users/Web-04/Downloads/images.jfif"
-                },
-                {
-                  "key": "brandlogo_five",
-                  "type": "file",
-                  "uuid": "f4fa1d1d-a092-41ff-84ce-27ad57d74357",
-                  "src": "/C:/Users/Web-04/Downloads/images.jfif"
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide1/gourmet_dining_experiences1.png"
+                  ]
                 }
               ]
             },
             "url": {
-              "raw": "http://localhost:5000/api/admin/add_brands",
+              "raw": "http://localhost:5000/api/admin/add_brand",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -833,7 +830,7 @@
               "path": [
                 "api",
                 "admin",
-                "add_brands"
+                "add_brand"
               ]
             }
           },
@@ -960,7 +957,48 @@
             "header": [],
             "body": {
               "mode": "formdata",
-              "formdata": []
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Gourmet Dining Experiences\n",
+                  "type": "text"
+                },
+                {
+                  "key": "dining_photo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Gourmet_dinning.webp"
+                  ]
+                },
+                {
+                  "key": "brandlogo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide1/gourmet_dining_experiences3.png"
+                  ]
+                },
+                {
+                  "key": "brandlogo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide1/gourmet_dining_experiences4.png"
+                  ]
+                },
+                {
+                  "key": "brandlogo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide1/gourmet_dining_experiences5.png"
+                  ]
+                },
+                {
+                  "key": "brandlogo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide1/gourmet_dining_experiences7.png"
+                  ]
+                }
+              ]
             },
             "url": {
               "raw": "http://localhost:5000/api/admin/add_dinings",
@@ -1053,6 +1091,44 @@
           "request": {
             "method": "POST",
             "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Premium Wellness Spaces",
+                  "type": "text"
+                },
+                {
+                  "key": "wellness_background_photo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide2/Premium_wellness.jpg"
+                  ]
+                },
+                {
+                  "key": "brandlogo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide2/Skincare.jpg"
+                  ]
+                },
+                {
+                  "key": "brandlogo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide2/Spa.jpg"
+                  ]
+                },
+                {
+                  "key": "brandlogo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide2/Yoga.jpg"
+                  ]
+                }
+              ]
+            },
             "url": {
               "raw": "http://localhost:5000/api/admin/add_wellnessSpaces",
               "protocol": "http",
@@ -1326,6 +1402,47 @@
           "request": {
             "method": "POST",
             "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "option_title",
+                  "value": "Grand Facade",
+                  "type": "text"
+                },
+                {
+                  "key": "option_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/waterfall.jpg"
+                  ]
+                },
+                {
+                  "key": "option_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Gaming_zone.webp"
+                  ]
+                },
+                {
+                  "key": "option_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Family_activity.webp"
+                  ]
+                },
+                {
+                  "key": "option_title",
+                  "value": "Gaming Zone",
+                  "type": "text"
+                },
+                {
+                  "key": "option_title",
+                  "value": "Family Activities",
+                  "type": "text"
+                }
+              ]
+            },
             "url": {
               "raw": "http://localhost:5000/api/admin/add_leisure",
               "protocol": "http",
@@ -1501,24 +1618,93 @@
       ]
     },
     {
-      "name": "OVERVIEW",
+      "name": "PROJECT VISION",
       "item": [
         {
-          "name": "ADD OVERVIEW",
+          "name": "CREATE PROJECT VISION",
           "request": {
             "method": "POST",
             "header": [],
             "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"bold_title\":\"The Destination for Business Excellence\",\r\n    \"description\":\"KB Central is a future-ready commercial destination designed to elevate business visibility, customer engagement, and long-term growth. Strategically located in Greater Noida, the development brings together premium retail, dining, wellness, entertainment, hospitality, and event experiences within a vibrant commercial ecosystem. With over 47,000 sq. ft. of retail space spread across six levels, KB Central is crafted to become a landmark destination for leading brands, businesses, and investors.\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "banner_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/project-vision-banner.webp"
+                  ]
+                },
+                {
+                  "key": "first_title",
+                  "value": "The Destination for Business Excellence",
+                  "type": "text"
+                },
+                {
+                  "key": "first_description",
+                  "value": "KB Central is a future-ready commercial destination designed to elevate business visibility, customer engagement, and long-term growth. Strategically located in Greater Noida, the development brings together premium retail, dining, wellness, entertainment, hospitality, and event experiences within a vibrant commercial ecosystem. With over 47,000 sq. ft. of retail space spread across six levels, KB Central is crafted to become a landmark destination for leading brands, businesses, and investors.",
+                  "type": "text"
+                },
+                {
+                  "key": "second_title",
+                  "value": "Positioned at the Heart of Opportunity",
+                  "type": "text"
+                },
+                {
+                  "key": "second_description",
+                  "value": "Located in one of Greater Noida's most promising commercial corridors, KB Central is surrounded by thriving residential neighbourhoods, leading educational institutions, business hubs, and transformative infrastructure. Set in Uttar Pradesh's fastest-growing economic region and strategically connected to the upcoming Noida International Airport at Jewar, KB Central stands at the crossroads of commerce, connectivity, and long-term appreciation.",
+                  "type": "text"
+                },
+                {
+                  "key": "third_title",
+                  "value": "Seamlessly Connected to the NCR",
+                  "type": "text"
+                },
+                {
+                  "key": "third_description",
+                  "value": "KB Central offers excellent accessibility through a well-established network of roads and transport infrastructure. Its strategic location ensures smooth connectivity to key destinations across the wider NCR region",
+                  "type": "text"
+                },
+                {
+                  "key": "last_title",
+                  "value": "Where Business Gains an Edge",
+                  "type": "text"
+                },
+                {
+                  "key": "last_description",
+                  "value": "Spread across six levels, KB Central offers over 47,000 sq. ft. of thoughtfully planned retail space designed to maximize footfall and brand exposure.",
+                  "type": "text"
+                },
+                {
+                  "key": "second_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Lcation_advantage.webp"
+                  ]
+                },
+                {
+                  "key": "third_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Connectivity.webp"
+                  ]
+                },
+                {
+                  "key": "last_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Project_Highlights.webp"
+                  ]
+                },
+                {
+                  "key": "key_highlights_options",
+                  "value": "[\"14-foot-highretail\",\"4sideopen architecture \",\"world-class circulation\"]",
+                  "type": "text"
                 }
-              }
+              ]
             },
             "url": {
-              "raw": "http://localhost:5000/api/admin/add_overview",
+              "raw": "http://localhost:5000/api/admin/add_project_vision",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1527,26 +1713,19 @@
               "path": [
                 "api",
                 "admin",
-                "add_overview"
+                "add_project_vision"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "GET ALL OVERVIEW",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
+          "name": "GET ALL PROJECT VISION",
           "request": {
             "method": "GET",
             "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": []
-            },
             "url": {
-              "raw": "http://localhost:5000/api/admin/getall_overview",
+              "raw": "http://localhost:5000/api/admin/getall_project_vision",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1555,24 +1734,29 @@
               "path": [
                 "api",
                 "admin",
-                "getall_overview"
+                "getall_project_vision"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET PROJECT BY ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/admin/get_project_vision/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
               ],
-              "query": [
-                {
-                  "key": "city",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "project_type_id",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "builder_type_id",
-                  "value": "2",
-                  "disabled": true
-                }
+              "port": "5000",
+              "path": [
+                "api",
+                "admin",
+                "get_project_vision",
+                "1"
               ]
             }
           },
@@ -1583,17 +1767,8 @@
           "request": {
             "method": "PUT",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"bold_title\":\"The Destination for Business \",\r\n    \"description\":\"KB Central is a future-ready commercial destination designed to elevate business visibility, customer engagement, and long-term growth. Strategically located in Greater Noida, the development brings together premium retail, dining, wellness, entertainment, hospitality, and event experiences within a vibrant commercial ecosystem. With over 47,000 sq. ft. of retail space spread across six levels,s.\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "http://localhost:5000/api/admin/update_overview/1",
+              "raw": "http://localhost:5000/api/admin/update_project_vision/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1602,7 +1777,7 @@
               "path": [
                 "api",
                 "admin",
-                "update_overview",
+                "update_project_vision",
                 "1"
               ]
             }
@@ -1615,7 +1790,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:5000/api/admin/delete_overview/2",
+              "raw": "http://localhost:5000/api/admin/delete_project_vision/1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1624,378 +1799,8 @@
               "path": [
                 "api",
                 "admin",
-                "delete_overview",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "LOCATION ADVANTAGES",
-      "item": [
-        {
-          "name": "ADD LOCATION ADVANTAGES",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_location_advantages",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_location_advantages"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL LOCATION advantages",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": []
-            },
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_location_advantages",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_location_advantages"
-              ],
-              "query": [
-                {
-                  "key": "city",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "project_type_id",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "builder_type_id",
-                  "value": "2",
-                  "type": "text",
-                  "disabled": true
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_location_advantages/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_location_advantages",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_location_advantages/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_location_advantages",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "CONNECTIVITY",
-      "item": [
-        {
-          "name": "ADD CONNECTIVITY",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_connectivity",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_connectivity"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL CONNECTIVITY",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": []
-            },
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_connectivity",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_connectivity"
-              ],
-              "query": [
-                {
-                  "key": "city",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "project_type_id",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "builder_type_id",
-                  "value": "2",
-                  "type": "text",
-                  "disabled": true
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_connectivity/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_connectivity",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_connectivity/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_connectivity",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "PROJECT HIGHLIGHT",
-      "item": [
-        {
-          "name": "ADD PROJECT HIGHLIGHT",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": []
-            },
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_projecthighlight",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_projecthighlight"
-              ],
-              "query": [
-                {
-                  "key": "city",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "project_type_id",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "builder_type_id",
-                  "value": "2",
-                  "type": "text",
-                  "disabled": true
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL PROJECT Highlights",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": []
-            },
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_projecthighlight",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_projecthighlight"
-              ],
-              "query": [
-                {
-                  "key": "city",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "project_type_id",
-                  "value": "1",
-                  "disabled": true
-                },
-                {
-                  "key": "builder_type_id",
-                  "value": "2",
-                  "type": "text",
-                  "disabled": true
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_projecthighlight/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_projecthighlight",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_projecthighlight/4",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_projecthighlight",
-                "4"
+                "delete_project_vision",
+                "1"
               ]
             }
           },
@@ -2375,6 +2180,86 @@
           "request": {
             "method": "POST",
             "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "banner_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/experience-banner.webp"
+                  ]
+                },
+                {
+                  "key": "first_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Experiment_&_Leisure.webp"
+                  ]
+                },
+                {
+                  "key": "second_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Wellness.webp"
+                  ]
+                },
+                {
+                  "key": "third_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Events.webp"
+                  ]
+                },
+                {
+                  "key": "last_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/Hospitality.webp"
+                  ]
+                },
+                {
+                  "key": "first_title",
+                  "value": "Designed for Leisure and Engagement",
+                  "type": "text"
+                },
+                {
+                  "key": "first_description",
+                  "value": "A compelling platform for entertainment brands seeking high visibility and sustained audience engagement through its integrated commercial ecosystem.",
+                  "type": "text"
+                },
+                {
+                  "key": "second_title",
+                  "value": "Spaces Dedicated to Well-Being",
+                  "type": "text"
+                },
+                {
+                  "key": "second_description",
+                  "value": "KB Central offers dedicated spaces for fitness, beauty, and holistic health brands, creating a unique space for premium lifestyle experiences and thus encouraging footfall.",
+                  "type": "text"
+                },
+                {
+                  "key": "third_title",
+                  "value": "Creating Reasons to Return",
+                  "type": "text"
+                },
+                {
+                  "key": "third_description",
+                  "value": "KB Central provides brands with a versatile platform to engage audiences, and generate meaningful business opportunities. The event space serves as a key footfall driver within the larger commercial ecosystem",
+                  "type": "text"
+                },
+                {
+                  "key": "last_title",
+                  "value": "World-Class Comfort and Convenience",
+                  "type": "text"
+                },
+                {
+                  "key": "last_description",
+                  "value": "Complementing the retail and lifestyle ecosystem is a world-class 5-star hospitality experience. The premium hospitality offering enhances the destination's appeal while contributing to sustained footfall throughout the year.",
+                  "type": "text"
+                }
+              ]
+            },
             "url": {
               "raw": "http://localhost:5000/api/admin/add_experience",
               "protocol": "http",
@@ -2550,370 +2435,6 @@
       ]
     },
     {
-      "name": "ENTERTAINMENT & LEISURE",
-      "item": [
-        {
-          "name": "ADD ENTERTAINMENT LEISURE",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_entertainmentleisure",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_entertainmentleisure"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL ENTERTAINMENT",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_entertainmentleisure",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_entertainmentleisure"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_entertainmentleisure/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_entertainmentleisure",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_entertainmentleisure/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_entertainmentleisure",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "WELLNESS",
-      "item": [
-        {
-          "name": "ADD WELLNESS",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_wellness",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_wellness"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL WELLNESS",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_wellness",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_wellness"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "New Request",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_wellness/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_wellness",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_wellness/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_wellness",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "EVENTS",
-      "item": [
-        {
-          "name": "ADD EVENTS",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_events",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_events"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL EVENTS",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_events",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_events"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_events/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_events",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_events/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_events",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "HOSPITALITY",
-      "item": [
-        {
-          "name": "ADD HOSPITALITY",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_hospitality",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_hospitality"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL HOSPITALITY",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_hospitality",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_hospitality"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_hospitality/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_hospitality",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_hospitality/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_hospitality",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
       "name": "ANENITIES",
       "item": [
         {
@@ -2921,6 +2442,52 @@
           "request": {
             "method": "POST",
             "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "banner_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/amenities-banner-1.webp"
+                  ]
+                },
+                {
+                  "key": "first_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/amenities-banner-2.webp"
+                  ]
+                },
+                {
+                  "key": " second_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/amenities-banner-3.webp"
+                  ]
+                },
+                {
+                  "key": "first_title",
+                  "value": "Parking That Supports Business Flow",
+                  "type": "text"
+                },
+                {
+                  "key": "first_description",
+                  "value": "Double-basement parking complemented by rare authority-approved front parking",
+                  "type": "text"
+                },
+                {
+                  "key": "second_title",
+                  "value": "Reliability You Can Count On",
+                  "type": "text"
+                },
+                {
+                  "key": "second_description",
+                  "value": "24x7 security, uninterrupted power backup, and smart infrastructure.",
+                  "type": "text"
+                }
+              ]
+            },
             "url": {
               "raw": "http://localhost:5000/api/admin/add_amenities",
               "protocol": "http",
@@ -2996,188 +2563,6 @@
                 "api",
                 "admin",
                 "delete_amenities",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "PARKING",
-      "item": [
-        {
-          "name": "ADD PARKING",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_parking",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_parking"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL PARKING",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_parking",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_parking"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_parking/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_parking",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_parking/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_parking",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "POWER BACKUP & SECURITY",
-      "item": [
-        {
-          "name": "ADD POWER BACKUP",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_powerbackup",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_powerbackup"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL POWER BACKUP",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_powerbackup",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_powerbackup"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_powerbackup/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_powerbackup",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_powerbackup/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_powerbackup",
                 "3"
               ]
             }
