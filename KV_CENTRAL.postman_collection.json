@@ -2750,6 +2750,38 @@
           "request": {
             "method": "POST",
             "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "banner_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/slide2/about-Banner.webp"
+                  ]
+                },
+                {
+                  "key": "first_title",
+                  "value": "Our Legacy",
+                  "type": "text"
+                },
+                {
+                  "key": "first_description",
+                  "value": "Avora Group is built on a strong foundation of real estate excellence and institutional trust. Founded by highly skilled and experienced industry veterans Mr. Naveen Jindal and Mr. Ashish Gupta, the group carries forward the rich legacy and proven track record established during their tenure as founding partners of the renowned KB Group",
+                  "type": "text"
+                },
+                {
+                  "key": "second_title",
+                  "value": "VISION & PHILOSOPHY",
+                  "type": "text"
+                },
+                {
+                  "key": "second_description",
+                  "value": "We are a forward-looking development firm dedicated to creating premium, high-street commercial assets. Our approach is rooted strictly in the builder’s perspective—prioritizing architectural integrity, long-term asset value, and uncompromising quality over standard market offerings.",
+                  "type": "text"
+                }
+              ]
+            },
             "url": {
               "raw": "http://localhost:5000/api/admin/add_aboutavoragroup",
               "protocol": "http",
@@ -2825,188 +2857,6 @@
                 "api",
                 "admin",
                 "delete_aboutavoragroup",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "OUR LEGACY",
-      "item": [
-        {
-          "name": "ADD OUR LEGACY",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_ourlegacy",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_ourlegacy"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL OUR LEGACY",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_ourlegacy",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_ourlegacy"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_ourlegacy/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_ourlegacy",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_ourlegacy/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_ourlegacy",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "VISION & PHILOSOPHY",
-      "item": [
-        {
-          "name": "ADD VISION PHILOSOPHY",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/add_visionphilosophy",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "add_visionphilosophy"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET ALL VISION",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/getall_visionphilosophy",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "getall_visionphilosophy"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UPDATE",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/update_visionphilosophy/2",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "update_visionphilosophy",
-                "2"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:5000/api/admin/delete_visionphilosophy/3",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "5000",
-              "path": [
-                "api",
-                "admin",
-                "delete_visionphilosophy",
                 "3"
               ]
             }
