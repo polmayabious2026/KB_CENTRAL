@@ -9,27 +9,6 @@ const floorplansSchema = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    floorimage_one: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    floorimage_two: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    floorimage_three: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    floorimage_four: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-   floorimage_five: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
     created_at: {
       type: DataTypes.DATE,
     },

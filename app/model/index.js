@@ -1,56 +1,54 @@
-const sequelize = require("../config/dB")
+const sequelize = require("../config/dB");
 
-const websitelogo = require("../model/websitelogo")
-const menu = require("../model/menu")
-const submenu = require("../model/submenu")
-const about = require("../model/about")
-const aboutoption = require("../model/aboutoption")
-const coverphoto = require("../model/coverphotos")
-const strategicadvantages = require("../model/strategic-advantages")
-const strategicoption = require("../model/strategicadvantages-options")
-const commercialecosystem = require("../model/commercial-ecosystem")
-const commercialoption = require("../model/commercialoptions")
-const brands = require("../model/brands")
-const brandlogooption = require("../model/brandlogooption")
-const diningexperiences = require("../model/dining-experiences")
-const diningLogo = require("../model/dininglogooption")
-const wellnessspaces = require("../model/wellness-spaces")
-const wellnessspaceoptions = require("../model/wellspacesoption")
-const floorplans = require("../model/floor-plans")
-const walkthrough = require("../model/walkthrough")
-const leisureexperiences= require("../model/leisure-experiences")
-const leisureoptions= require("../model/leisureoptions")
-const Landmark = require("../model/landmark")
-const LandmarkPoint = require("../model/landmark_points")
+const websitelogo = require("../model/websitelogo");
+const menu = require("../model/menu");
+const submenu = require("../model/submenu");
+const about = require("../model/about");
+const aboutoption = require("../model/aboutoption");
+const coverphoto = require("../model/coverphotos");
+const strategicadvantages = require("../model/strategic-advantages");
+const strategicoption = require("../model/strategicadvantages-options");
+const commercialecosystem = require("../model/commercial-ecosystem");
+const commercialoption = require("../model/commercialoptions");
+const brands = require("../model/brands");
+const brandlogooption = require("../model/brandlogooption");
+const diningexperiences = require("../model/dining-experiences");
+const diningLogo = require("../model/dininglogooption");
+const wellnessspaces = require("../model/wellness-spaces");
+const wellnessspaceoptions = require("../model/wellspacesoption");
 
-const project_vision = require("../model/project_vission")
-const key_highlights_option = require("../model/key_highlights_points")
+const floorplans = require("../model/floor-plans");
+const floorplanoption = require("../model/floorplansoption");
 
+const walkthrough = require("../model/walkthrough");
+const leisureexperiences = require("../model/leisure-experiences");
+const leisureoptions = require("../model/leisureoptions");
+const Landmark = require("../model/landmark");
+const LandmarkPoint = require("../model/landmark_points");
 
-const retailbrands = require("../model/retail&brands")
-const globalfashion = require("./globalfashion")
-const globalfashionoption = require("./globalfashionoption")
-const accessorylabel = require("./accessory-labels")
-const accessorylabeloption = require("./accessorylablesoption")
-const finedining = require("./fine-dining")
-const finediningoption = require("./finediningoption")
-const experiences = require("./experience")
+const project_vision = require("../model/project_vission");
+const key_highlights_option = require("../model/key_highlights_points");
 
-const amenities = require("./amenities")
-const accessibility = require("./accessibility")
-const accessibilityPoints = require("./accessibilitypoints")
-const smartfeatures = require("./smart-features")
-const smartfeaturesoption = require("./smartfeatureoption")
+const retailbrands = require("../model/retail&brands");
+const globalfashion = require("./globalfashion");
+const globalfashionoption = require("./globalfashionoption");
+const accessorylabel = require("./accessory-labels");
+const accessorylabeloption = require("./accessorylablesoption");
+const finedining = require("./fine-dining");
+const finediningoption = require("./finediningoption");
+const experiences = require("./experience");
 
-const aboutavoragroup = require("./aboutavora-group")
-const ourlegacy = require("./our-legacy")
-const visionphilosophy = require("./vision&philosophy")
-const contact = require("./contact")
-const admin = require("./admin.model")
+const amenities = require("./amenities");
+const accessibility = require("./accessibility");
+const accessibilityPoints = require("./accessibilitypoints");
+const smartfeatures = require("./smart-features");
+const smartfeaturesoption = require("./smartfeatureoption");
 
-
-
-
+const aboutavoragroup = require("./aboutavora-group");
+const ourlegacy = require("./our-legacy");
+const visionphilosophy = require("./vision&philosophy");
+const contact = require("./contact");
+const admin = require("./admin.model");
 
 // landmark
 Landmark.hasMany(LandmarkPoint, {
@@ -190,8 +188,18 @@ smartfeaturesoption.belongsTo(smartfeatures, {
   foreignKey: "smartfeature_id",
   as: "smartfeatures",
 });
+// floorplans
+floorplans.hasMany(floorplanoption, {
+  foreignKey: "floorplans_id",
+  as: "floorplanoptions",
+});
 
+floorplanoption.belongsTo(floorplans, {
+  foreignKey: "floorplans_id",
+  as: "floorplan",
+});
 
-sequelize.sync()
-.then(()=>console.log("Db Synced Successfully"))
-.catch((err)=>console.log("Db Sync Failed ",err))
+sequelize
+  .sync()
+  .then(() => console.log("Db Synced Successfully"))
+  .catch((err) => console.log("Db Sync Failed ", err));

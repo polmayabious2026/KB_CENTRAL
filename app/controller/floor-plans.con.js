@@ -1,143 +1,118 @@
-
-const floorplans = require("../model/floor-plans")
+const floorplans = require("../model/floor-plans");
+const floorplanoptions = require("../model/floorplansoption");
 
 const AddFloorPlans = async (req, res) => {
-    try {
-        // console.log("BODY:", req.body);
-        // console.log("FILES:", req.files);
-
-        // const { title } = req.body;
-
-        const floorimage_one =
-            req.files?.floorimage_one?.[0]?.filename;
-
-        const floorimage_two =
-            req.files?.floorimage_two?.[0]?.filename;
-
-        const floorimage_three =
-            req.files?.floorimage_three?.[0]?.filename;
-
-        const floorimage_four =
-            req.files?.floorimage_four?.[0]?.filename;
-
-        const floorimage_five =
-            req.files?.floorimage_five?.[0]?.filename;
-
-        if (
-            !floorimage_one ||
-            !floorimage_two ||
-            !floorimage_three ||
-            !floorimage_four ||
-            !floorimage_five
-        ) {
-            return res.status(400).json({
-                status: false,
-                message: "Please upload all 5 Floor Images"
-            });
-        }
-
-        const newBrand = await floorplans.create({
-            floorimage_one,
-            floorimage_two,
-            floorimage_three,
-            floorimage_four,
-            floorimage_five
-        });
-
-        return res.status(201).json({
-            status: true,
-            message: "Brand added successfully",
-            data: newBrand
-        });
-
-    } catch (error) {
-        console.log(error);
-
-        return res.status(500).json({
-            status: false,
-            message: "Something Went Wrong",
-            error: error.message
-        });
-    }
-};
-const FindAllFloorData = async (req, res) => {
   try {
-    const allData = await floorplans.findAll();
-    return res.status(200).json({
+    // console.log("FILES:", req.files);
+    // console.log("BODY:", req.body);
+
+    const files = req.files || [];
+
+    if (!files.length) {
+      return res.status(400).json({
+        status: false,
+        message: "Please upload at least one floor image",
+      });
+    }
+
+    const newFloorPlan = await floorplans.create({});
+
+    const floorImages = files.map((file) => ({
+      floorplans_id: String(newFloorPlan.id),
+      floorimage: file.filename,
+    }));
+
+    const options = await floorplanoptions.bulkCreate(floorImages);
+
+    return res.status(201).json({
       status: true,
-      message: "All FloorPlans Details Fetched Successfully",
-      data: allData,
+      message: "Floor Plans Added Successfully",
+      data: {
+        ...newFloorPlan.toJSON(),
+        floorimages: options,
+      },
     });
   } catch (error) {
-    return res.status(400).json({
+    console.log("AddFloorPlans Error:", error);
+
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
     });
   }
 };
-const UpdateFloorPlans = async (req, res) => {
-  try {
-    console.log("FILES:", req.files);
 
+const FindAllFloorData = async (req, res) => {
+  try {
+    const allFloorPlans = await floorplans.findAll({
+      order: [["id", "DESC"]],
+    });
+
+    const data = await Promise.all(
+      allFloorPlans.map(async (floorPlan) => {
+        const images = await floorplanoptions.findAll({
+          where: {
+            floorplans_id: String(floorPlan.id),
+          },
+          order: [["id", "ASC"]],
+        });
+
+        return {
+          ...floorPlan.toJSON(),
+          floorimages: images,
+        };
+      }),
+    );
+
+    return res.status(200).json({
+      status: true,
+      message: "All FloorPlans Details Fetched Successfully",
+      data,
+    });
+  } catch (error) {
+    console.log("FindAllFloorData Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
+
+const FindFloorPlanById = async (req, res) => {
+  try {
     const { floor_id } = req.params;
 
-    const floorData = await floorplans.findByPk(floor_id);
+    const floorPlan = await floorplans.findByPk(floor_id);
 
-    if (!floorData) {
+    if (!floorPlan) {
       return res.status(404).json({
         status: false,
         message: "Floor Plans Not Found",
       });
     }
 
-    const floorimage_one =
-      req.files?.floorimage_one?.[0]?.filename;
-
-    const floorimage_two =
-      req.files?.floorimage_two?.[0]?.filename;
-
-    const floorimage_three =
-      req.files?.floorimage_three?.[0]?.filename;
-
-    const floorimage_four =
-      req.files?.floorimage_four?.[0]?.filename;
-
-    const floorimage_five =
-      req.files?.floorimage_five?.[0]?.filename;
-
-    if (floorimage_one) {
-      floorData.floorimage_one = floorimage_one;
-    }
-
-    if (floorimage_two) {
-      floorData.floorimage_two = floorimage_two;
-    }
-
-    if (floorimage_three) {
-      floorData.floorimage_three = floorimage_three;
-    }
-
-    if (floorimage_four) {
-      floorData.floorimage_four = floorimage_four;
-    }
-
-    if (floorimage_five) {
-      floorData.floorimage_five = floorimage_five;
-    }
-
-    await floorData.save();
+    const images = await floorplanoptions.findAll({
+      where: {
+        floorplans_id: String(floorPlan.id),
+      },
+      order: [["id", "ASC"]],
+    });
 
     return res.status(200).json({
       status: true,
-      message: "Floor Plans Updated Successfully",
-      data: floorData,
+      message: "Floor Plans Details Fetched Successfully",
+      data: {
+        ...floorPlan.toJSON(),
+        floorimages: images,
+      },
     });
-
   } catch (error) {
-    console.log(error);
+    console.log("FindFloorPlanById Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -145,31 +120,93 @@ const UpdateFloorPlans = async (req, res) => {
   }
 };
 
+const UpdateFloorPlans = async (req, res) => {
+  try {
+    // console.log("FILES:", req.files);
+
+    const { floor_id } = req.params;
+
+    const floorPlan = await floorplans.findByPk(floor_id);
+
+    if (!floorPlan) {
+      return res.status(404).json({
+        status: false,
+        message: "Floor Plans Not Found",
+      });
+    }
+
+    const files = req.files || [];
+
+    if (files.length > 0) {
+      await floorplanoptions.destroy({
+        where: {
+          floorplans_id: String(floorPlan.id),
+        },
+      });
+
+      const newImages = files.map((file) => ({
+        floorplans_id: String(floorPlan.id),
+        floorimage: file.filename,
+      }));
+
+      await floorplanoptions.bulkCreate(newImages);
+    }
+
+    const images = await floorplanoptions.findAll({
+      where: {
+        floorplans_id: String(floorPlan.id),
+      },
+      order: [["id", "ASC"]],
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "Floor Plans Updated Successfully",
+      data: {
+        ...floorPlan.toJSON(),
+        floorimages: images,
+      },
+    });
+  } catch (error) {
+    console.log("UpdateFloorPlans Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something Went Wrong",
+      error: error.message,
+    });
+  }
+};
 
 const DeleteFloorPlans = async (req, res) => {
   try {
     const { floor_id } = req.params;
 
-    const floorData = await floorplans.findByPk(floor_id);
+    const floorPlan = await floorplans.findByPk(floor_id);
 
-    if (!floorData) {
+    if (!floorPlan) {
       return res.status(404).json({
         status: false,
         message: "Floor Plans Not Found",
       });
     }
 
-    await floorData.destroy();
+    await floorplanoptions.destroy({
+      where: {
+        floorplans_id: String(floorPlan.id),
+      },
+    });
+
+    await floorPlan.destroy();
 
     return res.status(200).json({
       status: true,
       message: "Floor Plans Deleted Successfully",
     });
-
   } catch (error) {
-    console.log(error);
+    console.log("DeleteFloorPlans Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something Went Wrong",
       error: error.message,
@@ -177,11 +214,10 @@ const DeleteFloorPlans = async (req, res) => {
   }
 };
 
-
 module.exports = {
   AddFloorPlans,
   FindAllFloorData,
+  FindFloorPlanById,
   UpdateFloorPlans,
-  DeleteFloorPlans
+  DeleteFloorPlans,
 };
-
